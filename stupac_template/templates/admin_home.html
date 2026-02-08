@@ -10,7 +10,15 @@
     <title>Document</title>
 </head>
 <body>
-<h1>Admin_home. </h1>
-<p>To use variables in the website, use it in this format: {{ temp }}</p>
+<div class="topnav">
+    <a class="active" href="{% url 'login' %}">Login</a>
+    <a class="active" href="{% url 'enrol_user' %}">Enrol user</a>
+    <a class="active" href="{% url 'view_users_and_asign_pac' %}">View users and asign pac</a>
+</div>
+<h1>Admin home</h1>
+<button href="{% url 'login' %}">Login</button>
+<br>
+<br>
+<button href="{% url 'view_users_and_asign_pac' %}">View users and asign pac</button>
 </body>
 </html>
