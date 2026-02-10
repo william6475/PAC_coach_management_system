@@ -11,6 +11,6 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'weatherApp.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'PAC_coach_management_system.settings')
 
 application = get_wsgi_application()
