@@ -68,7 +68,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'weatherApp.wsgi.application'
+WSGI_APPLICATION = 'PAC_coach_management_system.wsgi.application'
 
 
 # Database
