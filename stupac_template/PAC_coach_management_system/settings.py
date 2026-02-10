@@ -50,7 +50,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'weatherApp.urls'
+ROOT_URLCONF = 'PAC_coach_management_system.urls'
 
 TEMPLATES = [
     {
