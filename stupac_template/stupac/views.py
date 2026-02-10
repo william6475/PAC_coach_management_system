@@ -5,7 +5,7 @@ from django.http import HttpResponse
 import requests
 from django.template import loader
 from django.shortcuts import render
-
+# from models import name_of_class
 
 # Views will be created here. These will connect the database to the HTML, and is where most of the backend code will be.
 def temp_here(request):
