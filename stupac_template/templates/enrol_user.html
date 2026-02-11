@@ -1,16 +1,93 @@
-
+{% load static %}
 <!doctype html>
 <html lang="en">
-
-<!-- Replace this with the finished website's index file. -->
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Document</title>
+    <link rel="stylesheet" href="{% static 'stupac_template/styles.css' %}">
+    <title>Enrol user</title>
 </head>
-<body>
-<h1>Enrol_user </h1>
-<p>To use variables in the website, use it in this format: {{ temp }}</p>
+<body onload="Restrict_enrolment_form_options()">
+<!--Navbar-->
+<div class="topnav">
+    <a class="active" href="{% url 'login' %}">Login</a>
+    <a class="active" href="{% url 'admin_home' %}">Admin home</a>
+    <a class="active" href="{% url 'view_users_and_asign_pac' %}">View users and asign pac</a>
+</div>
+
+<hr class="line">
+<h1>Enrol user</h1>
+<p class="Mandatory_field_label">*Mandatory field</p>
+<!--Input form-->
+<form>
+    <label>Account type<label class="Mandatory_field_label">*</label>
+        <br>
+        <select id="Account_type_dropdown" onchange="Restrict_enrolment_form_options()">
+            <option value="Student">Student</option>
+            <option value="PAC">PAC</option>
+        </select>
+    </label>
+    <br>
+    <br>
+    <label id="Student_number_label">Student number<label class="Mandatory_field_label">*</label>
+        <br>
+        <input type="number" id="Student_number">
+        <br>
+    </label>
+    <label id="Student_first_name_label">First name<label class="Mandatory_field_label">*</label>
+        <br>
+        <input type="text" id="Student_first_name">
+        <br>
+    </label>
+    <label id="Student_last_name_label">Last name<label class="Mandatory_field_label">*</label>
+        <br>
+        <input type="text" id="Student_last_name">
+        <br>
+    </label>
+    <label id="Student_email_label">Email<label class="Mandatory_field_label">*</label>
+        <br>
+        <input type="email" id="Student_email">
+        <br>
+    </label>
+    <label id="Student_course_label">Course<label class="Mandatory_field_label">*</label>
+        <br>
+        <input type="text" id="Student_course">
+        <br>
+    </label>
+    <label id="Student_year_group_label">Year group<label class="Mandatory_field_label">*</label>
+        <br>
+        <input type="number" id="Student_year_group">
+        <br>
+    </label>
+    <label id="Student_assigned_pac_label">Assigned pac
+        <br>
+        <input type="text" id="Student_assigned_pac">
+        <br>
+    </label>
+    <label id="PAC_first_name_label">First name<label class="Mandatory_field_label">*</label>
+        <br>
+        <input type="text" id="PAC_first_name">
+        <br>
+    </label>
+    <label id="PAC_last_name_label">Last name<label class="Mandatory_field_label">*</label>
+        <br>
+        <input type="text" id="PAC_last_name">
+        <br>
+    </label>
+    <label id="PAC_email_label">Email<label class="Mandatory_field_label">*</label>
+        <br>
+        <input type="email" id="PAC_email">
+        <br>
+    </label>
+    <label id="PAC_department_label">Department name<label class="Mandatory_field_label">*</label>
+        <br>
+        <input type="text" id="PAC_department">
+        <br>
+    </label>
+    <!--Button to submit the form-->
+    <input type="submit">
+</form>
+<script src="{% static 'stupac_template/enrol_user.js' %}"></script>
 </body>
 </html>
