@@ -1,0 +1,25 @@
+.line{
+    border-color: black;
+    width:100%;
+}
+
+.Mandatory_field_label{
+    color:red;
+}
+
+.underlined{
+    text-decoration:underline;
+}
+
+.Lookup_results{
+    height:18em;
+    width:30em;
+    overflow-y:scroll;
+    overflow-x:auto;
+    border: solid;
+    border-width:0.1em;
+}
+
+.Widened_form_field{
+    width:13em;
+}
