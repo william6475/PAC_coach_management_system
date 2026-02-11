@@ -7,6 +7,10 @@
     color:red;
 }
 
+.underlined{
+    text-decoration:underline;
+}
+
 #Student_lookup_results{
     height:18em;
     width:30em;

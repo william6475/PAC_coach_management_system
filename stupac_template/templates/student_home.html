@@ -9,7 +9,18 @@
     <title>Student home</title>
 </head>
 <body>
-<h1>Student_home</h1>
-<p>To use variables in the website, use it in this format: {{ temp }}</p>
+
+<!--Navbar-->
+<div class="topnav">
+    <a class="active" href="{% url 'login' %}">Sign out</a>
+</div>
+<hr class="line">
+
+<h1>Student home</h1>
+<p class="underlined">PAC details</p>
+<p>PAC first name: Sample name</p>
+<p>PAC last name: Sample name</p>
+<p>PAC email: Sample email</p>
+<p>PAC department: Sample department</p>
 </body>
 </html>
