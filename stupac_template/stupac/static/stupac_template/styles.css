@@ -1,7 +1,17 @@
 .line{
     border-color: black;
+    width:100%;
 }
 
 .Mandatory_field_label{
     color:red;
+}
+
+#Student_lookup_results{
+    height:18em;
+    width:30em;
+    overflow-y:scroll;
+    overflow-x:auto;
+    border: solid;
+    border-width:0.1em;
 }
