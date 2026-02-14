@@ -1,0 +1,27 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{% static 'stupac_template/styles.css' %}">
+    <title>Admin home</title>
+</head>
+<body>
+<!--Navbar-->
+<div class="topnav">
+    <a class="active" href="{% url 'login' %}">Sign out</a>
+    <a class="active" href="{% url 'enrol_user' %}">Enrol user</a>
+    <a class="active" href="{% url 'view_users_and_asign_pac' %}">View users and asign pac</a>
+</div>
+<hr class="line">
+
+<h1>Admin home</h1>
+<!--Buttons-->
+<button href="{% url 'login' %}">Login</button>
+<br>
+<br>
+<button href="{% url 'view_users_and_asign_pac' %}">View users and asign pac</button>
+</body>
+</html>

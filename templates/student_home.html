@@ -1,0 +1,26 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{% static 'stupac_template/styles.css' %}">
+    <title>Student home</title>
+</head>
+<body>
+
+<!--Navbar-->
+<div class="topnav">
+    <a class="active" href="{% url 'login' %}">Sign out</a>
+</div>
+<hr class="line">
+
+<h1>Student home</h1>
+<p class="underlined">PAC details</p>
+<p>PAC first name: Sample name</p>
+<p>PAC last name: Sample name</p>
+<p>PAC email: Sample email</p>
+<p>PAC department: Sample department</p>
+</body>
+</html>
