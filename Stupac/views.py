@@ -33,18 +33,21 @@ def view_users_and_asign_pac(request):
 
 def model_test_admin(request):
     random_item = Admin.objects.all().order_by('?').first()
+    temp = random_item.first_name
     template = loader.get_template('model_test.html')
-    context = {'random_item': random_item.first_name}
+    context = {'random_item': temp}
     return HttpResponse(template.render(context, request))
 
 def model_test_pac(request):
     random_item = Pac.objects.all().order_by('?').first()
+    temp = random_item.first_name
     template = loader.get_template('model_test.html')
-    context = {'random_item': random_item.first_name}
+    context = {'random_item': temp}
     return HttpResponse(template.render(context, request))
 
 def model_test_student(request):
     random_item = Student.objects.all().order_by('?').first()
+    temp = random_item.first_name
     template = loader.get_template('model_test.html')
-    context = {'random_item': random_item.first_name}
+    context = {'random_item': temp}
     return HttpResponse(template.render(context, request))

@@ -24,8 +24,7 @@ class Pac(models.Model):
     email = models.TextField(blank=True, null=True,max_length=64)
     department = models.TextField(blank=True, null=True,max_length=64)
     last_edited_when = models.DateTimeField
-    #last_edited_by = models.ForeignKey("Admin", db_column='admin_id', on_delete=CASCADE) # Foreign keys are currently non-functional.
-
+    last_edited_by = models.ForeignKey("Admin", db_column='last_edited_by', on_delete=CASCADE)
     class Meta:
         managed = False
         db_table = 'pac'
@@ -38,9 +37,9 @@ class Student(models.Model):
     gender = models.CharField(blank=True, null=True,max_length=16)
     email = models.CharField(blank=True, null=True,max_length=64)
     course = models.CharField(blank=True, null=True,max_length=64)
-    #assigned_pac = models.ForeignKey("Pac", db_column='pac_id', on_delete=CASCADE) # Foreign keys are currently non-functional.
+    assigned_pac = models.ForeignKey("Pac", db_column='assigned_pac', on_delete=CASCADE)
     last_edited_when = models.DateTimeField
-    #last_edited_by = models.ForeignKey("Admin", db_column='admin_id', on_delete=CASCADE) # Foreign keys are currently non-functional.
+    last_edited_by = models.ForeignKey("Admin", db_column='last_edited_by', on_delete=CASCADE)
 
     class Meta:
         managed = False
