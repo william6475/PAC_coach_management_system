@@ -7,7 +7,7 @@ urlpatterns = [
     path('enrol_user/', views.enrol_user, name='enrol_user'),
     path('pac_home/', views.pac_home, name='pac_home'),
     path('student_home/', views.student_home, name='student_home'),
-    path('view_users_and_asign_pac/', views.view_users_and_asign_pac, name='view_users_and_asign_pac'),
+    path('view_users_and_assign_pac/', views.view_users_and_asign_pac, name='view_users_and_assign_pac'),
 
     path('models_test/admin',views.model_test_admin, name = 'model_test_admin'),
     path('models_test/pac',views.model_test_pac, name = 'model_test_pac'),

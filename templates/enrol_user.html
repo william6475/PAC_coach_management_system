@@ -6,7 +6,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="{% static 'stupac_template/styles.css' %}?v=16">
+    <!--<link rel="stylesheet" href="{% static 'stupac_template/styles.css' %}?v=16"> -->
     <style>
         html, body {
             height: 100%;
@@ -70,7 +70,7 @@
 <div class="topnav">
     <a href="{% url 'admin_home' %}">Admin home</a>
     <a href="{% url 'view_users_and_assign_pac' %}">View users and assign pac</a>
-    <a style="float:right" href="{% url 'logout' %}">Sign out</a>
+    <a style="float:right" href="{% url 'login' %}">Sign out</a>
 </div>
 
 <div class="main-content">
