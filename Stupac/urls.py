@@ -1,6 +1,14 @@
 from django.urls import path
 from Stupac import views
+from . import views
 
+urlpatterns = [
+    path("students/", views.student_home, name="student_home"),
+    path("students/create/", views.enrol_User, name="enrol_user"),
+    path("students/edit/<int:student_id>/", views.edit_student, name="edit_student"),
+    path("students/delete/<int:student_id>/", views.delete_student, name="delete_student"),
+    path("students/assign/", views.view_users_and_assign_pac, name="assign_pac"),
+]1
 urlpatterns = [
     path('', views.login, name = 'login'),
     path('admin_home/', views.admin_home, name = 'admin_home'),
