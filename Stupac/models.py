@@ -1,48 +1,50 @@
+from django.contrib.auth.models import AbstractUser, UserManager
 from django.db import models
 from django.db.models import CASCADE
 
 
 # Create your models here.
 
-#This page will be used to convert the database values into models.
-class Admin(models.Model):
+#Generic user class used for user authentication
+#Usefull fields inherited from AbstractUser: Username / Password / email / first_name / last_name
+class Generic_user(AbstractUser):
+    generic_user_id = models.AutoField(blank=True, primary_key=True)
+
+#Admin class
+class Admin(Generic_user):
+    objects = UserManager()
+    
     admin_id = models.AutoField(blank=True, primary_key=True)
-    first_name = models.TextField(blank=True, null=True,max_length=32)
-    last_name = models.TextField(blank=True, null=True,max_length=32)
-    email = models.TextField(blank=True, null=True,max_length=64)
 
     class Meta:
-        managed = False
         db_table = 'admin'
 
-class Pac(models.Model):
+#PAC class
+class Pac(Generic_user):
+    objects = UserManager()
+
     pac_id = models.AutoField(blank=True,primary_key=True)
-    first_name = models.TextField(blank=True, null=True,max_length=32)
-    last_name = models.TextField(blank=True, null=True,max_length=32)
     dob = models.DateField
     gender = models.TextField(blank=True, null=True,max_length=16)
-    email = models.TextField(blank=True, null=True,max_length=64)
     department = models.TextField(blank=True, null=True,max_length=64)
     last_edited_when = models.DateTimeField
-    last_edited_by = models.ForeignKey("Admin", db_column='last_edited_by', on_delete=CASCADE)
+    last_edited_by = models.ForeignKey("Admin", db_column='last_edited_by', on_delete=CASCADE, null=True, blank=True)
     class Meta:
-        managed = False
         db_table = 'pac'
 
-class Student(models.Model):
+#Student class
+class Student(Generic_user):
+    objects = UserManager()
+
     student_id = models.AutoField(blank=True,primary_key=True)
-    first_name = models.CharField(blank=True, null=True,max_length=32)
-    last_name = models.CharField(blank=True, null=True,max_length=32)
     dob = models.DateField
     gender = models.CharField(blank=True, null=True,max_length=16)
-    email = models.CharField(blank=True, null=True,max_length=64)
     course = models.CharField(blank=True, null=True,max_length=64)
     assigned_pac = models.ForeignKey("Pac", db_column='assigned_pac', on_delete=CASCADE)
     last_edited_when = models.DateTimeField
-    last_edited_by = models.ForeignKey("Admin", db_column='last_edited_by', on_delete=CASCADE)
+    last_edited_by = models.ForeignKey("Admin", db_column='last_edited_by', on_delete=CASCADE, null=True, blank=True)
 
     class Meta:
-        managed = False
         db_table = 'student'
 
 """
