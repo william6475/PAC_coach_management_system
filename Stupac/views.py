@@ -28,7 +28,7 @@ def pac_home(request):
 def enrol_user(request):
     return render(request, "enrol_user.html")
 
-def view_users_and_asign_pac(request):
+def view_users_and_assign_pac(request):
     return render(request, "view_users_and_assign_pac.html")
 
 def model_test_admin(request):
