@@ -8,86 +8,111 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="{% static 'stupac_template/styles.css' %}?v=16">
     <style>
-        html, body {
-            height: 100%;
+        body, html {
             margin: 0;
             padding: 0;
-            background-color: white !important;
-            overflow-x: hidden;
-        }
-
-        .bg-container {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 91%;
-            opacity: 0.5;
-            z-index: 0;
-            pointer-events: none;
-        }
-
-        .topnav {
-            background-color: #63918f !important;
-            overflow: hidden;
-            width: 100%;
-            position: relative;
-            z-index: 1;
-        }
-
-        .topnav a {
-            float: left;
-            color: #f2f2f2 !important;
-            text-align: center;
-            padding: 14px 16px;
-            text-decoration: none;
-            font-size: 17px;
-            display: block;
-        }
-
-        .topnav a:hover {
-            background-color: #ddd !important;
-            color: black !important;
-        }
-
-        .topnav a.active {
-            background-color: #486a69 !important;
-            color: white !important;
         }
 
         .main-content {
-            padding: 20px;
+            padding: 0;
+            margin: 0;
             position: relative;
             z-index: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            gap: 20px;
+            min-height: 100vh;
+        }
+
+        .login-box {
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            width: 100%;
+            max-width: 400px;
+            margin-top: 250px; /* Space for the absolute logo */
+        }
+
+        .login-box h1 {
+            margin-top: 0;
+            color: #333;
+        }
+
+        .login-box form label {
+            display: block;
+            margin-bottom: 15px;
+            text-align: left;
+        }
+
+        .login-box input[type="text"],
+        .login-box input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        .login-box input[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            background-color: #63918f;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+
+        .login-box input[type="submit"]:hover {
+            background-color: #486a69;
+        }
+        .logo {
+            max-width: 400px;
+            width: 100%;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        .main-content > *:first-child {
+            margin-top: 0 !important;
         }
     </style>
     <title>Login</title>
     <link rel="icon" href="data:,">
 </head>
 <body>
-<img class="bg-container" src="{% static 'stupac_template/logo.png' %}">
-<!--Navbar-->
-<div class="topnav">
-    <a href="{% url 'login' %}" class="active">Login</a>
-    <a style="float:right" href="{% url 'login' %}">Sign out</a>
-</div>
+  <div class="background-animation">
+     <div class="wave"></div>
+     <div class="wave"></div>
+     <div class="wave"></div>
+  </div>
 
 <div class="main-content">
-<h1>Login  </h1>
+    <img src="{% static 'stupac_template/logo.png' %}" alt="Logo" class="logo">
+<div class="login-box">
+<h1>Login</h1>
 <!--Input form-->
 <form>
     <label>Username
-        <br>
         <input type="text">
-        <br>
     </label>
         <label>Password
-        <br>
-        <input type="text">
-        <br>
+        <input type="password">
     </label>
     <input type="submit">
 </form>
+</div>
 </div>
 </body>
 </html>
