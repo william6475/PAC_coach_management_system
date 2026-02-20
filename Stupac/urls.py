@@ -1,7 +1,8 @@
 
 from django.urls import path
-from . import views
-
+from Stupac import views
+from django.conf import settings
+from django.conf.urls.static import static
 urlpatterns = [
     path('', views.login, name='login'),
     path('admin_home/', views.admin_home, name='admin_home'),
@@ -18,7 +19,7 @@ urlpatterns = [
     path('models_test/admin', views.model_test_admin, name='model_test_admin'),
     path('models_test/pac', views.model_test_pac, name='model_test_pac'),
     path('models_test/student', views.model_test_student, name='model_test_student'),
-]
+]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 # /* from django.urls import path
 # from Stupac import views
