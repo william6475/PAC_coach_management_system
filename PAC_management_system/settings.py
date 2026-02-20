@@ -9,7 +9,7 @@ For more information on this file, seengs/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/6.0/ref/settings/
 """
-
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-e36-^2t+^j)ok$_z$s&zxg*v^afneky4q=$5-1cut2hhs4-yg1
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -42,6 +42,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -118,10 +119,14 @@ USE_TZ = True
 LOGIN_URL = 'login'
 
 # Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/6.0/howto/static-files/
-
+# https://docs.djangoproject.com/en/6.0/howto/static-files
 STATIC_URL = 'static/'
 
 #Sets the user model (Used during authentication)
 #https://docs.djangoproject.com/en/6.0/topics/auth/customizing/
 AUTH_USER_MODEL = 'Stupac.Generic_user'
+STATIC_ROOT = os.path.join(BASE_DIR, 'deployment_static_files')
+
+#Points to media folder
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
