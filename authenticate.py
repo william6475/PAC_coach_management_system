@@ -1,4 +1,4 @@
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 
 from Stupac.models import Pac, Student, Admin
 
@@ -15,7 +15,6 @@ def authenticate_user(request, username, password):
 
         return("authentication_error")
 
-#Test user authentication
-#sample_user = Pac.objects.create_user(username='Terry Brown ee', password='extremely_secure_password')
-#authenticate_user(getattr(sample_user, 'username'), 'extremely_secure_password')
-#print(getattr(sample_user, 'username'), 'extremely_secure_password')
+#Logs out user
+def logout_user(request):
+    logout(request)
