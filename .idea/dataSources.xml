@@ -5,7 +5,7 @@
       <driver-ref>sqlite.xerial</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
-      <jdbc-url>jdbc:sqlite:C:\Users\athar\PycharmProjects\PAC_management_system\db.sqlite3</jdbc-url>
+      <jdbc-url>jdbc:sqlite:C:\Users\camer\Documents\!welcome\py\PAC_coach_management_system\db.sqlite3</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
     <data-source source="LOCAL" name="Django default" uuid="5e205563-e210-47d3-9e2c-2742ffb3fdaa">
