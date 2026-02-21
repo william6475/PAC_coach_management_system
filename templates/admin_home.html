@@ -81,15 +81,27 @@
     <a href="{% url 'view_users_and_assign_pac' %}">View users and assign pac</a>
     <a style="float:right" href="{% url 'login' %}">Sign out</a>
 </div>
-
+<div class="background-animation">
+     <div class="wave"></div>
+     <div class="wave"></div>
+     <div class="wave"></div>
+  </div>
 <div class="main-content">
     <div class="login-box">
 <h1>Admin home</h1>
 <!--Buttons-->
-<button href="{% url 'enrol_user' %}">Enrol a user</button>
+        <a href="{% url 'enrol_user' %}">
+        <label>
+        <input type="submit" value = "Enrol user">
+         </label>
+        </a>
 <br>
 <br>
-<button href="{% url 'view_users_and_assign_pac' %}">View users and assign pac</button>
+        <a href="{% url 'view_users_and_assign_pac'%}">
+        <label>
+        <input type="submit" value = "View users and assign pac">
+         </label>
+        </a>
 </div>
     </div>
 </body>

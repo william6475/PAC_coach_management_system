@@ -123,13 +123,17 @@
     <a href="{% url 'student_home' %}" class="active">Home<!--<img src="{% static 'stupac_template/logo.png' %}" alt="Logo" class=" login-logo">--></a>
     <a style="float:right" href="{% url 'login' %}">Sign out</a>
 </div>
-
+<div class="background-animation">
+     <div class="wave"></div>
+     <div class="wave"></div>
+     <div class="wave"></div>
+  </div>
 <div class="main-content">
     <div class="login-box">
 <h1>Student Lookup</h1>
 
 <label>
-    <input type="text" placeholder="Student number or full name" class="Widened_form_field">
+    <input type="text" placeholder="Student number or full name" class="Widened_form_field" id = 'student_name'>
 </label>
 <br>
 <br>
@@ -142,6 +146,16 @@
             </tr>
         </thead>
         <tbody>
+        <!--
+        <script>
+            name = document.getElementById("student_name").style.display = "block";
+            for(let i = 0; i<=7;i++)
+            {
+                "<tr><td>"+"Test name: "+ i + "</td></tr>"
+            }
+        </script>
+        -->
+
             <tr><td>Example result</td></tr>
             <tr><td>Example result</td></tr>
             <tr><td>Example result</td></tr>

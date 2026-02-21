@@ -1,3 +1,4 @@
+from django.contrib.auth import authenticate
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.shortcuts import render
 from django.http import HttpResponse
@@ -7,8 +8,6 @@ from Stupac.tests import is_admin, is_student, is_pac
 
 
 # from models import name_of_class
-
-from .models import Student, Pac
 from django.shortcuts import render, redirect, get_object_or_404
 
 
@@ -28,18 +27,34 @@ def login(request):
 #@login_required
 #@user_passes_test(is_admin)
 def admin_home(request):
-    return render(request, "admin_home.html")
+    template = loader.get_template('admin_home.html')
+    context = {}
+    return HttpResponse(template.render(context, request))
 
 #@login_required
 #@user_passes_test(is_student)
 def student_home(request):
     students = Student.objects.all()
-    return render(request, "student_home.html", {"students": students})
-  
+    template = loader.get_template('student_home.html')
+    pac_first_name = "Placeholder Name"
+    pac_last_name = "Placeholder Name"
+    pac_email = "Placeholder Name"
+    pac_department = "Placeholder Name"
+    context = {
+        'pac_first_name' : pac_first_name,
+        'pac_last_name' : pac_last_name,
+        'pac_email' : pac_email,
+        'pac_department' : pac_department
+    }
+    return HttpResponse(template.render(context, request))
+
+
 #@login_required
 #@user_passes_test(is_pac)
 def pac_home(request):
-    return render(request, "pac_home.html")
+    template = loader.get_template('pac_home.html')
+    context = {}
+    return HttpResponse(template.render(context, request))
   
 #@login_required
 #@user_passes_test(is_admin)
@@ -102,21 +117,21 @@ def edit_student(request, student_id):
 
 def model_test_admin(request):
     random_item = Admin.objects.all().order_by('?').first()
-    temp = random_item.first_name
+    temp = random_item.admin_first_name
     template = loader.get_template('model_test.html')
     context = {'random_item': temp}
     return HttpResponse(template.render(context, request))
 
 def model_test_pac(request):
     random_item = Pac.objects.all().order_by('?').first()
-    temp = random_item.first_name
+    temp = random_item.pac_first_name
     template = loader.get_template('model_test.html')
     context = {'random_item': temp}
     return HttpResponse(template.render(context, request))
 
 def model_test_student(request):
     random_item = Student.objects.all().order_by('?').first()
-    temp = random_item.first_name
+    temp = random_item.student_first_name
     template = loader.get_template('model_test.html')
     context = {'random_item': temp}
     return HttpResponse(template.render(context, request))
