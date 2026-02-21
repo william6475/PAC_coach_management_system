@@ -6,13 +6,79 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!--<link rel="stylesheet" href="{% static 'stupac_template/styles.css' %}?v=16"> -->
+    <link rel="stylesheet" href="{% static 'stupac_template/styles.css' %}?v=16">
     <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+        }
 
         .main-content {
-            padding: 20px;
-            position: relative;
+            padding: 40px;
+            margin: 0;
+            position: static;
             z-index: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            gap: 20px;
+            min-height: 100vh;
+        }
+
+         .center{
+            <!-- margin-left: 33%;
+             margin-right: 33%; -->
+         }
+         .login-box form label {
+             margin-left: 3%;
+            display: block;
+            margin-bottom: 15px;
+            text-align: left;
+        }
+
+         .displayTogether{
+             display: inline;
+         }
+         .no-changes{
+            margin-bottom: 15px;
+            text-align: left;
+         }
+
+        .login-box input[type="text"],
+        .login-box input[type="number"],
+        .login-box input[type="email"],
+        .login-box input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        .login-box select {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        .login-box input[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            background-color: #63918f;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+        .login-box input[type="submit"]:hover {
+            background-color: #486a69;
         }
     </style>
     <title>Enrol user</title>
@@ -20,90 +86,75 @@
 </head>
 <body onload="Restrict_enrolment_form_options()">
 <!--Navbar-->
+
 <div class="topnav">
     <a href="{% url 'admin_home' %}">Admin home</a>
     <a href="{% url 'view_users_and_assign_pac' %}">View users and assign pac</a>
     <a style="float:right" href="{% url 'login' %}">Sign out</a>
 </div>
 
+<div class="background-animation">
+     <div class="wave"></div>
+     <div class="wave"></div>
+     <div class="wave"></div>
+  </div>
 <div class="main-content">
-<h1>Enrol user</h1>
-<p class="Mandatory_field_label">*Mandatory field</p>
+    <div class="login-box">
+        <h1>Enrol user</h1>
+        <p class="Mandatory_field_label">*Mandatory field</p>
 <!--Input form-->
-<form>
-    <label>Account type<label class="Mandatory_field_label">*</label>
-        <br>
-        <select id="Account_type_dropdown" onchange="Restrict_enrolment_form_options()">
-            <option value="Student">Student</option>
-            <option value="PAC">PAC</option>
-        </select>
-    </label>
-    <br>
-    <br>
-    <label id="Student_number_label">Student number<label class="Mandatory_field_label">*</label>
-        <br>
-        <input type="number" id="Student_number">
-        <br>
-    </label>
-    <label id="Student_first_name_label">First name<label class="Mandatory_field_label">*</label>
-        <br>
-        <input type="text" id="Student_first_name">
-        <br>
-    </label>
-    <label id="Student_last_name_label">Last name<label class="Mandatory_field_label">*</label>
-        <br>
-        <input type= "text" id="Student_last_name">
-        <br>
-    </label>
-    <label id="Student_email_label">Email<label class="Mandatory_field_label">*</label>
-        <br>
-        <input type="email" id="Student_email">
-        <br>
-    </label>
-    <label id="Student_course_label">Course<label class="Mandatory_field_label">*</label>
-        <br>
-        <input type="text" id="Student_course">
-        <br>
-    </label>
-    <label id="Student_year_group_label">Year group<label class="Mandatory_field_label">*</label>
-        <br>
-        <input type="number" id="Student_year_group">
-        <br>
-    </label>
-    <label id="Student_assigned_pac_label">Assigned pac
-        <br>
-        <input type="text" id="Student_assigned_pac">
-        <br>
-    </label>
-    <label id="PAC_first_name_label">First name<label class="Mandatory_field_label">*</label>
-        <br>
-        <input type="text" id="PAC_first_name">
-        <br>
-    </label>
-    <label id="PAC_last_name_label">Last name<label class="Mandatory_field_label">*</label>
-        <br>
-        <input type="text" id="PAC_last_name">
-        <br>
-    </label>
-    <label id="PAC_email_label">Email<label class="Mandatory_field_label">*</label>
-        <br>
-        <input type="email" id="PAC_email">
-        <br>
-    </label>
-    <label id="PAC_department_label">Department name<label class="Mandatory_field_label">*</label>
-        <br>
-        <input type="text" id="PAC_department">
-        <br>
-    </label>
-    <label>Account password<label class="Mandatory_field_label">*</label>
-        <br>
-        <input type="text">
-        <br>
-    </label>
+        <form>
+            <br>
+            <label>Account type<label class="Mandatory_field_label no-changes">*</label>
+                <select id="Account_type_dropdown" onchange="Restrict_enrolment_form_options()">
+                    <option value="Student">Student</option>
+                    <option value="PAC">PAC</option>
+                </select>
+            </label>
+            <label id="Student_number_label">Student number<label class="Mandatory_field_label">*</label>
+                <input type="number" id="Student_number" class = "center">
+            </label>
+            <label id="Student_first_name_label">First name<label class="Mandatory_field_label">*</label>
+                <input type="text" id="Student_first_name" class = "center">
+            </label>
+            <label id="Student_last_name_label">Last name<label class="Mandatory_field_label">*</label>
+                <input type= "text" id="Student_last_name" class = "center">
+            </label>
+            <label id="Student_email_label">Email<label class="Mandatory_field_label">*</label>
+                <input type="email" id="Student_email" class = "center">
+            </label>
+            <label id="Student_course_label">Course<label class="Mandatory_field_label">*</label>
+                <input type="text" id="Student_course" class = "center">
+            </label>
+            <label id="Student_year_group_label">Year group<label class="Mandatory_field_label">*</label>
+                <input type="number" id="Student_year_group" class = "center">
+            </label>
+            <label id="Student_assigned_pac_label">Assigned pac
+                <input type="text" id="Student_assigned_pac" class = "center">
+            </label>
+            <label id="PAC_first_name_label">First name<label class="Mandatory_field_label">*</label>
+                <input type="text" id="PAC_first_name" class = "center">
+            </label>
+            <label id="PAC_last_name_label">Last name<label class="Mandatory_field_label">*</label>
+                <input type="text" id="PAC_last_name" class = "center">
+            </label>
+            <label id="PAC_email_label">Email<label class="Mandatory_field_label">*</label>
+                <input type="email" id="PAC_email" class = "center">
+            </label>
+            <label id="PAC_department_label">Department name<label class="Mandatory_field_label">*</label>
+                <input type="text" id="PAC_department" class = "center">
+            </label>
+            <label>Account password<label class="Mandatory_field_label">*</label>
+                <input type="text" class = "center">
+            </label>
     <!--Button to submit the form-->
-    <input type="submit">
-</form>
+            <br>
+            <input type="submit" class = "center">
+            <br>
+            <br>
+        </form>
+        </div>
+        <script src="{% static 'stupac_template/enrol_user.js' %}"></script>
 </div>
-<script src="{% static 'stupac_template/enrol_user.js' %}"></script>
-</body>.
+    </body>.
 </html>

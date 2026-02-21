@@ -7,11 +7,81 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="{% static 'stupac_template/styles.css' %}?v=16">
     <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+        }
 
         .main-content {
-            padding: 20px;
-            position: relative;
+            padding: 40px;
+            margin: 0;
+            position: static;
             z-index: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            gap: 20px;
+            min-height: 100vh;
+        }
+
+        .login-box {
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            width: 100%;
+            max-width: 400px;
+            margin-top: 250px; /* Space for the absolute logo */
+        }
+
+        .login-box h1 {
+            margin-top: 0;
+            color: #333;
+        }
+
+        .login-logo{
+            max-height: 30px;
+        }
+        .navbarText {
+            font-size: 30px;
+            text-align: center;
+        }
+        .topPad{
+            padding-top: 90px;
+        }
+
+        .login-box form label {
+            display: block;
+            margin-bottom: 15px;
+            text-align: left;
+        }
+        .login-box p {
+            display: block;
+            margin-bottom: 15px;
+            text-align: left;
+        }
+        .biggerText{
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .main-content > *:first-child {
+            margin-top: 0 !important;
+        }
+
+        @media (max-width: 915px) {
+            .login-box input[type="submit"] {
+            width: 20%;
+            padding: 10px;
+            background-color: #63918f;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 10px;
+        }
         }
     </style>
     <title>Student home</title>
@@ -20,16 +90,27 @@
 <body>
 <!--Navbar-->
 <div class="topnav">
+    <a href="{% url 'student_home' %}" class="active">Home<!--<img src="{% static 'stupac_template/logo.png' %}" alt="Logo" class=" login-logo">--></a>
     <a style="float:right" href="{% url 'login' %}">Sign out</a>
 </div>
-
+<div class="background-animation">
+     <div class="wave"></div>
+     <div class="wave"></div>
+     <div class="wave"></div>
+  </div>
 <div class="main-content">
-<h1>Student home</h1>
-<p class="underlined">PAC details</p>
-<p>PAC first name: Sample name</p>
-<p>PAC last name: Sample name</p>
-<p>PAC email: Sample email</p>
-<p>PAC department: Sample department</p>
+    <div class = login-box>
+        <h1>Your Pac</h1>
+        <hr class="line">
+        <p class = "biggerText">First name:</p>
+        <p>Sample name</p>
+        <p class = "biggerText">Last name:</p>
+        <p>Sample name</p>
+        <p class = "biggerText">Email:</p>
+        <p>Sample email</p>
+        <p class = "biggerText">Department:</p>
+        <p>Sample department</p>
+    </div>
 </div>
 </body>
 </html>

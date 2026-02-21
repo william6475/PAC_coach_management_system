@@ -20,26 +20,29 @@ def temp_here(request):
     return HttpResponse(template.render(context, request))
 
 def login(request):
-    return render(request, "login.html")
+    template = loader.get_template('login.html')
+    context = {}
+    return HttpResponse(template.render(context, request))
 
-@login_required
-@user_passes_test(is_admin)
+
+#@login_required
+#@user_passes_test(is_admin)
 def admin_home(request):
     return render(request, "admin_home.html")
 
-@login_required
-@user_passes_test(is_student)
+#@login_required
+#@user_passes_test(is_student)
 def student_home(request):
     students = Student.objects.all()
     return render(request, "student_home.html", {"students": students})
   
-@login_required
-@user_passes_test(is_pac)
+#@login_required
+#@user_passes_test(is_pac)
 def pac_home(request):
     return render(request, "pac_home.html")
   
-@login_required
-@user_passes_test(is_admin)
+#@login_required
+#@user_passes_test(is_admin)
 def enrol_user(request):
     if request.method == "POST":
         Student.objects.create(
@@ -50,13 +53,13 @@ def enrol_user(request):
             email=request.POST.get("email"),
             course=request.POST.get("course"),
         )
-        return redirect("student_home")
+        #return redirect("student_home")
 
     return render(request, "enrol_user.html")
 
-@login_required
-@user_passes_test(is_admin)
-def view_users_and_asign_pac(request):
+#@login_required
+#@user_passes_test(is_admin)
+def view_users_and_assign_pac(request):
     students = Student.objects.all()
     pacs = Pac.objects.all()
 
@@ -68,17 +71,18 @@ def view_users_and_asign_pac(request):
         student.assigned_pac_id = pac_id
         student.save()
 
-        return redirect("student_home")
+        #return redirect("student_home")
 
     return render(request, "view_users_and_assign_pac.html", {
         "students": students,
         "pacs": pacs
     })
 
+
 def delete_student(request, student_id):
     student = Student.objects.get(pk=student_id)
     student.delete()
-    return redirect("student_home")
+    #return redirect("student_home")
 
 def edit_student(request, student_id):
     student = get_object_or_404(Student, pk=student_id)
@@ -91,7 +95,7 @@ def edit_student(request, student_id):
         student.email = request.POST.get("email")
         student.course = request.POST.get("course")
         student.save()
-        return redirect("student_home")
+        #return redirect("student_home")
 
     return render(request, "enrol_user.html", {"student": student})
 
