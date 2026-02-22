@@ -49,29 +49,22 @@ class User(AbstractBaseUser, PermissionsMixin):
     def get_last_name(self):
         return self.last_name
 
-# have not yet edited users past this to reflect new default user.
 
 #Admin class
-class Admin(Generic_user):
-    objects = UserManager()
+class Admin(User):
+    objects = CustomUserManager()
     
-    admin_id = models.AutoField(blank=True, primary_key=True)
-    admin_first_name = models.TextField(blank=True, null=True, max_length=32)
-    admin_last_name = models.TextField(blank=True, null=True, max_length=32)
-    admin_email = models.TextField(blank=True, null=True, max_length=64) # DO THIS!!
+    id = models.AutoField(blank=True, primary_key=True)
 
     class Meta:
         db_table = 'admin'
 
 
 # PAC class
-class Pac(Generic_user):
-    objects = UserManager()
+class Pac(User):
+    objects = CustomUserManager()
 
-    pac_id = models.AutoField(blank=True, primary_key=True)
-    pac_first_name = models.TextField(blank=True, null=True, max_length=32)
-    pac_last_name = models.TextField(blank=True, null=True, max_length=32)
-    pac_email = models.TextField(blank=True, null=True, max_length=64)
+    id = models.AutoField(blank=True, primary_key=True)
     dob = models.DateField
     gender = models.TextField(blank=True, null=True,max_length=16)
     department = models.TextField(blank=True, null=True,max_length=64)
@@ -80,13 +73,10 @@ class Pac(Generic_user):
         db_table = 'pac'
 
 #Student class
-class Student(Generic_user):
-    objects = UserManager()
+class Student(User):
+    objects = CustomUserManager()
 
-    student_id = models.AutoField(blank=True,primary_key=True)
-    student_first_name = models.TextField(blank=True, null=True, max_length=32)
-    student_last_name = models.TextField(blank=True, null=True, max_length=32)
-    student_email = models.TextField(blank=True, null=True, max_length=64)
+    id = models.AutoField(blank=True,primary_key=True)
     dob = models.DateField
     gender = models.CharField(blank=True, null=True,max_length=16)
     course = models.CharField(blank=True, null=True,max_length=64)
@@ -94,6 +84,8 @@ class Student(Generic_user):
 
     class Meta:
         db_table = 'student'
+
+
 
 """
 OLD code
