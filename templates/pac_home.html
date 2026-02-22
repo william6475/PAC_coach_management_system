@@ -116,7 +116,10 @@
     </style>
     <title>PAC home</title>
     <link rel="icon" href="data:,">
-    <script src="{% static 'stupac_template/student_search.js' %}"></script>
+    <script>
+        const searchParams = new URLSearchParams(window.location.search);//gets the url parameters
+        let searchTerm = searchParams.get('student_name');
+    </script>
 </head>
 <body>
 <!--Navbar-->
@@ -149,7 +152,7 @@
             </tr>
         </thead>
         <tbody>
-            {% for student in all_students %}
+        {% for student in student_details %}
                 <tr><td>{{ student.student_first_name }}</td></tr>
             {% endfor %}
         </tbody>

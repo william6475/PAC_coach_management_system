@@ -11,30 +11,8 @@ from django.template.loader import render_to_string
 from django.http import JsonResponse
 
 # Temporary views for testing
-"""
-def search_view(request):
-    all_students = student_details = Student.objects.raw("Select * from student ")
-    context = {'count': len(all_students)}
-    return render(request, 'search.html', context)
 
-
-def search_results_view(request):
-    query = request.GET.get('search', '')
-    print(f'{query = }')
-
-    all_people = Student.objects.all()
-    if query:
-        people = all_people.filter(name__icontains=query)
-    else:
-        people = []
-
-    context = {'people': people, 'count': all_people.count()}
-    return render(request, 'search_results.html', context)
-
-"""
-
-
-
+# End of temporary views
 
 # Views created here
 def temp_here(request):
@@ -72,19 +50,20 @@ def student_home(request):
     }
     return HttpResponse(template.render(context, request))
 
-
 #@login_required
 #@user_passes_test(is_pac)
 def pac_home(request):
     template = loader.get_template('pac_home.html')
     all_students = Student.objects.raw("Select * from student ")
-    if request.method == "POST":
-        student_name = request.POST.get("student_name")
+    if (request.GET.get("student_name")):
+        student_name = request.GET.get("student_name")
     else:
         student_name = ""
     student_details = Student.objects.raw("Select * from student where student_first_name LIKE '%" + student_name + "%'")
+
     context = {
         'all_students': all_students,
+        'student_details' : student_details,
     }
     return HttpResponse(template.render(context, request))
   
