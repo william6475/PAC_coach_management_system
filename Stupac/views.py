@@ -13,8 +13,8 @@ from django.http import JsonResponse
 # Temporary views for testing
 """
 def search_view(request):
-    all_people = Student.objects.all()
-    context = {'count': all_people.count()}
+    all_students = student_details = Student.objects.raw("Select * from student ")
+    context = {'count': len(all_students)}
     return render(request, 'search.html', context)
 
 
@@ -30,8 +30,8 @@ def search_results_view(request):
 
     context = {'people': people, 'count': all_people.count()}
     return render(request, 'search_results.html', context)
-"""
 
+"""
 
 
 
@@ -77,21 +77,14 @@ def student_home(request):
 #@user_passes_test(is_pac)
 def pac_home(request):
     template = loader.get_template('pac_home.html')
+    all_students = Student.objects.raw("Select * from student ")
     if request.method == "POST":
         student_name = request.POST.get("student_name")
     else:
         student_name = ""
     student_details = Student.objects.raw("Select * from student where student_first_name LIKE '%" + student_name + "%'")
     context = {
-            'result1' : student_details[0].student_first_name,
-            #'result2' : student_details[1].student_first_name,
-            #'result3' : student_details[2].student_first_name,
-            #'result4' : student_details[3].student_first_name,
-            #'result5' : student_details[4].student_first_name,
-            #'result6' : student_details[5].student_first_name,
-            #'result7' : student_details[6].student_first_name,
-            #'result8' : student_details[7].student_first_name,
-            #'result9' : student_details[8].student_first_name
+        'all_students': all_students,
     }
     return HttpResponse(template.render(context, request))
   

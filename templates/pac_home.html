@@ -116,6 +116,7 @@
     </style>
     <title>PAC home</title>
     <link rel="icon" href="data:,">
+    <script src="{% static 'stupac_template/student_search.js' %}"></script>
 </head>
 <body>
 <!--Navbar-->
@@ -133,7 +134,9 @@
 <h1>Student Lookup</h1>
 
 <label>
-    <input type="text" placeholder="Student number or full name" class="Widened_form_field" id = 'student_name'>
+    <form>
+    <input type="text" name = "student_name" placeholder="Student number or full name" class="Widened_form_field" id = 'student_name' autofocus >
+    </form>
 </label>
 <br>
 <br>
@@ -146,16 +149,9 @@
             </tr>
         </thead>
         <tbody>
-
-            <tr><td>{{ result1 }}</td></tr>
-            <tr><td>{{ result2 }}</td></tr>
-            <tr><td>{{ result3 }}</td></tr>
-            <tr><td>{{ result4 }}</td></tr>
-            <tr><td>{{ result5 }}</td></tr>
-            <tr><td>{{ result6 }}</td></tr>
-            <tr><td>{{ result7 }}</td></tr>
-            <tr><td>{{ result8 }}</td></tr>
-            <tr><td>{{ result9 }}</td></tr>
+            {% for student in all_students %}
+                <tr><td>{{ student.student_first_name }}</td></tr>
+            {% endfor %}
         </tbody>
     </table>
 </div>

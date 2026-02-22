@@ -18,6 +18,9 @@ urlpatterns = [
     path('models_test/admin', views.model_test_admin, name='model_test_admin'),
     path('models_test/pac', views.model_test_pac, name='model_test_pac'),
     path('models_test/student', views.model_test_student, name='model_test_student'),
+
+    # path('search/',views.search_view, name='search_view'),
+
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 # /* from django.urls import path
