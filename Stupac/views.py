@@ -37,8 +37,8 @@ def admin_home(request):
 #@login_required
 #@user_passes_test(is_student)
 def student_home(request):
-    placeholder_student_id = "1"
-    student_details = Student.objects.raw("Select * from student where student_id = '" + placeholder_student_id + "'")
+    student_id = "1" #This is a placeholder, replace with login system authentication
+    student_details = Student.objects.raw("Select * from student where student_id = '" + student_id + "'")
     student_pac = str(student_details[0].assigned_pac_id)
     pac_details = Pac.objects.raw("Select * from pac where pac_id = '" + student_pac + "'")
     template = loader.get_template('student_home.html')
@@ -54,15 +54,13 @@ def student_home(request):
 #@user_passes_test(is_pac)
 def pac_home(request):
     template = loader.get_template('pac_home.html')
-    all_students = Student.objects.raw("Select * from student ")
+    pac_id = "1" #This is a placeholder, replace with login system authentication
     if (request.GET.get("student_name")):
         student_name = request.GET.get("student_name")
     else:
         student_name = ""
-    student_details = Student.objects.raw("Select * from student where student_first_name LIKE '%" + student_name + "%'")
-
+    student_details = Student.objects.raw("Select * from student where student_first_name LIKE '%" + student_name + "%' and assigned_pac = '" + pac_id + "'")
     context = {
-        'all_students': all_students,
         'student_details' : student_details,
     }
     return HttpResponse(template.render(context, request))
