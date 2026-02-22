@@ -27,7 +27,7 @@ class CustomUserManager(UserManager):
         extra_fields.setdefault('is_superuser', True)
         return self._create_user(email, password, **extra_fields)
 
-class User(AbstractBaseUser, PermissionsMixin):
+class Generic_User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(blank=True, default='', unique=True)
     first_name = models.CharField(blank=True, default='', max_length=32)
     last_name = models.CharField(blank=True, default='', max_length=32)
@@ -51,20 +51,20 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 
 #Admin class
-class Admin(User):
+class Admin(Generic_User):
     objects = CustomUserManager()
     
-    id = models.AutoField(blank=True, primary_key=True)
+    admin_id = models.AutoField(blank=True, primary_key=True)
 
     class Meta:
         db_table = 'admin'
 
 
 # PAC class
-class Pac(User):
+class Pac(Generic_User):
     objects = CustomUserManager()
 
-    id = models.AutoField(blank=True, primary_key=True)
+    pac_id = models.AutoField(blank=True, primary_key=True)
     dob = models.DateField
     gender = models.TextField(blank=True, null=True,max_length=16)
     department = models.TextField(blank=True, null=True,max_length=64)
@@ -73,10 +73,10 @@ class Pac(User):
         db_table = 'pac'
 
 #Student class
-class Student(User):
+class Student(Generic_User):
     objects = CustomUserManager()
 
-    id = models.AutoField(blank=True,primary_key=True)
+    student_id = models.AutoField(blank=True,primary_key=True)
     dob = models.DateField
     gender = models.CharField(blank=True, null=True,max_length=16)
     course = models.CharField(blank=True, null=True,max_length=64)

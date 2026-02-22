@@ -38,11 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'Stupac.apps.StupacConfig',
-    'authuser'
     #'Stupac',
 ]
-
-AUTH_USER_MODEL = 'authuser.User'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -128,8 +125,7 @@ STATIC_URL = 'static/'
 
 #Sets the user model (Used during authentication)
 #https://docs.djangoproject.com/en/6.0/topics/auth/customizing/
-AUTH_USER_MODEL = 'Stupac.Generic_user'
-#AUTH_USER_MODEL = 'Stupac.User'
+AUTH_USER_MODEL = 'Stupac.Generic_User'
 STATIC_ROOT = os.path.join(BASE_DIR, 'deployment_static_files')
 
 #Points to media folder
