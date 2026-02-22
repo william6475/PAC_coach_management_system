@@ -21,7 +21,7 @@ def temp_here(request):
     context = {'temp': temp}
     return HttpResponse(template.render(context, request))
 
-def login(request):
+def login_page(request):
     template = loader.get_template('login.html')
     context = {}
     return HttpResponse(template.render(context, request))
