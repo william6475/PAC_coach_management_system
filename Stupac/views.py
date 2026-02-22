@@ -6,9 +6,34 @@ from django.template import loader
 from Stupac.models import Admin, Pac, Student
 from Stupac.tests import is_admin, is_student, is_pac
 
-
-# from models import name_of_class
 from django.shortcuts import render, redirect, get_object_or_404
+from django.template.loader import render_to_string
+from django.http import JsonResponse
+
+# Temporary views for testing
+"""
+def search_view(request):
+    all_people = Student.objects.all()
+    context = {'count': all_people.count()}
+    return render(request, 'search.html', context)
+
+
+def search_results_view(request):
+    query = request.GET.get('search', '')
+    print(f'{query = }')
+
+    all_people = Student.objects.all()
+    if query:
+        people = all_people.filter(name__icontains=query)
+    else:
+        people = []
+
+    context = {'people': people, 'count': all_people.count()}
+    return render(request, 'search_results.html', context)
+"""
+
+
+
 
 
 # Views created here
@@ -34,17 +59,16 @@ def admin_home(request):
 #@login_required
 #@user_passes_test(is_student)
 def student_home(request):
-    students = Student.objects.all()
+    placeholder_student_id = "1"
+    student_details = Student.objects.raw("Select * from student where student_id = '" + placeholder_student_id + "'")
+    student_pac = str(student_details[0].assigned_pac_id)
+    pac_details = Pac.objects.raw("Select * from pac where pac_id = '" + student_pac + "'")
     template = loader.get_template('student_home.html')
-    pac_first_name = "Placeholder Name"
-    pac_last_name = "Placeholder Name"
-    pac_email = "Placeholder Name"
-    pac_department = "Placeholder Name"
     context = {
-        'pac_first_name' : pac_first_name,
-        'pac_last_name' : pac_last_name,
-        'pac_email' : pac_email,
-        'pac_department' : pac_department
+        'pac_first_name' : pac_details[0].pac_first_name,
+        'pac_last_name' : pac_details[0].pac_last_name,
+        'pac_email' : pac_details[0].pac_email,
+        'pac_department' : pac_details[0].department
     }
     return HttpResponse(template.render(context, request))
 
@@ -53,7 +77,22 @@ def student_home(request):
 #@user_passes_test(is_pac)
 def pac_home(request):
     template = loader.get_template('pac_home.html')
-    context = {}
+    if request.method == "POST":
+        student_name = request.POST.get("student_name")
+    else:
+        student_name = ""
+    student_details = Student.objects.raw("Select * from student where student_first_name LIKE '%" + student_name + "%'")
+    context = {
+            'result1' : student_details[0].student_first_name,
+            #'result2' : student_details[1].student_first_name,
+            #'result3' : student_details[2].student_first_name,
+            #'result4' : student_details[3].student_first_name,
+            #'result5' : student_details[4].student_first_name,
+            #'result6' : student_details[5].student_first_name,
+            #'result7' : student_details[6].student_first_name,
+            #'result8' : student_details[7].student_first_name,
+            #'result9' : student_details[8].student_first_name
+    }
     return HttpResponse(template.render(context, request))
   
 #@login_required
