@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>
+        {% block title %}
+            Django App
+        {% endblock %}
+    </title>
+</head>
+<body>
+    <nav>
+        <a href="{% url 'student_home' %}">Student</a>
+        <a href="{% url 'pac_home' %}">Pac</a>
+        <a href="{% url 'admin_home' %}">Admin</a>
+        <form class = "logout" action="{% url 'logout' %}" method="POST">
+            {% csrf_token %}
+            <button type="submit">Logout</button>
+        </form>
+    </nav>
+<main>
+    {% block content %}
+    {% endblock %}
+</main>

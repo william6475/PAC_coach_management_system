@@ -55,6 +55,9 @@ class Admin(Generic_User):
     objects = CustomUserManager()
     
     admin_id = models.AutoField(blank=True, primary_key=True)
+    admin_first_name = models.TextField(blank=True, null=True, max_length=32) #This may be redundant
+    admin_last_name = models.TextField(blank=True, null=True, max_length=32) #This may be redundant
+    admin_email = models.TextField(blank=True, null=True, max_length=64) #This may be redundant
 
     class Meta:
         db_table = 'admin'
@@ -65,6 +68,9 @@ class Pac(Generic_User):
     objects = CustomUserManager()
 
     pac_id = models.AutoField(blank=True, primary_key=True)
+    pac_first_name = models.TextField(blank=True, null=True, max_length=32) #This may be redundant
+    pac_last_name = models.TextField(blank=True, null=True, max_length=32) #This may be redundant
+    pac_email = models.TextField(blank=True, null=True, max_length=64) #This may be redundant
     dob = models.DateField
     gender = models.TextField(blank=True, null=True,max_length=16)
     department = models.TextField(blank=True, null=True,max_length=64)
@@ -77,6 +83,9 @@ class Student(Generic_User):
     objects = CustomUserManager()
 
     student_id = models.AutoField(blank=True,primary_key=True)
+    student_first_name = models.TextField(blank=True, null=True, max_length=32) #This may be redundant
+    student_last_name = models.TextField(blank=True, null=True, max_length=32) #This may be redundant
+    student_email = models.TextField(blank=True, null=True, max_length=64) #This may be redundant
     dob = models.DateField
     gender = models.CharField(blank=True, null=True,max_length=16)
     course = models.CharField(blank=True, null=True,max_length=64)
@@ -84,8 +93,6 @@ class Student(Generic_User):
 
     class Meta:
         db_table = 'student'
-
-
 
 """
 OLD code

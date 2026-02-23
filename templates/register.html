@@ -1,0 +1,14 @@
+{% extends 'layout.html' %}
+{% block title %}
+    Register a New User
+{% endblock %}
+
+{% block content %}
+    <h1>Register a user</h1>
+    <!-- Change the path in action if you want a user to be redirected. -->
+    <form action = "" method = "post">
+    {% csrf_token %}
+    {{ form }}
+    <button type = "submit">Submit</button>
+    </form>
+{% endblock %}

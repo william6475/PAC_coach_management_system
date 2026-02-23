@@ -126,6 +126,7 @@ STATIC_URL = 'static/'
 #Sets the user model (Used during authentication)
 #https://docs.djangoproject.com/en/6.0/topics/auth/customizing/
 AUTH_USER_MODEL = 'Stupac.Generic_User'
+#AUTH_USER_MODEL = 'Stupac.User'
 STATIC_ROOT = os.path.join(BASE_DIR, 'deployment_static_files')
 
 #Points to media folder

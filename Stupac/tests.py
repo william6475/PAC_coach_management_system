@@ -1,3 +1,4 @@
+
 from Stupac.models import Admin, Student, Pac
 
 
