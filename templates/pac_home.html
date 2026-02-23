@@ -116,12 +116,16 @@
     </style>
     <title>PAC home</title>
     <link rel="icon" href="data:,">
+    <script>
+        const searchParams = new URLSearchParams(window.location.search);//gets the url parameters
+        let searchTerm = searchParams.get('student_name');
+    </script>
 </head>
 <body>
 <!--Navbar-->
 <div class="topnav">
     <a href="{% url 'student_home' %}" class="active">Home<!--<img src="{% static 'stupac_template/logo.png' %}" alt="Logo" class=" login-logo">--></a>
-    <a style="float:right" href="{% url 'login' %}">Sign out</a>
+    <a style="float:right" href="{% url 'login_page' %}">Sign out</a>
 </div>
 <div class="background-animation">
      <div class="wave"></div>
@@ -133,7 +137,9 @@
 <h1>Student Lookup</h1>
 
 <label>
-    <input type="text" placeholder="Student number or full name" class="Widened_form_field" id = 'student_name'>
+    <form>
+    <input type="text" name = "student_name" placeholder="Student number or full name" class="Widened_form_field" id = 'student_name' autofocus >
+    </form>
 </label>
 <br>
 <br>
@@ -146,16 +152,9 @@
             </tr>
         </thead>
         <tbody>
-
-            <tr><td>{{ result1 }}</td></tr>
-            <tr><td>{{ result2 }}</td></tr>
-            <tr><td>{{ result3 }}</td></tr>
-            <tr><td>{{ result4 }}</td></tr>
-            <tr><td>{{ result5 }}</td></tr>
-            <tr><td>{{ result6 }}</td></tr>
-            <tr><td>{{ result7 }}</td></tr>
-            <tr><td>{{ result8 }}</td></tr>
-            <tr><td>{{ result9 }}</td></tr>
+        {% for student in student_details %}
+                <tr><td>{{ student.student_first_name }}</td></tr>
+            {% endfor %}
         </tbody>
     </table>
 </div>

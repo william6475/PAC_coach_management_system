@@ -52,7 +52,8 @@
 
         .login-box form label {
             display: block;
-            margin-bottom: 15px;
+            margin-top: 20px;
+            margin-bottom: 10px;
             text-align: left;
         }
 
@@ -124,6 +125,9 @@
 <!--<h1>Login</h1> -->
     <img src="{% static 'stupac_template/logo-dark.png' %}" alt="Logo" class=" login-logo">
 <!--Input form-->
+    {% block content %}
+    {% endblock %}
+<!--
 <form>
     <label>Username
         <input type="text">
@@ -134,12 +138,10 @@
     <label>
         <input type="submit" value = "Log in">
     </label>
-</form>
-    <!--
-    <a href="{% url 'enrol_user' %}">
+</form> -->
+    <a href="{% url 'register_view' %}">
         <p> Register Here</p>
     </a>
-    -->
 </div>
 </div>
 </body>

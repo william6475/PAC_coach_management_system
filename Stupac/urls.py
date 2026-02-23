@@ -21,7 +21,9 @@ urlpatterns = [
     path('models_test/admin', views.model_test_admin, name='model_test_admin'),
     path('models_test/pac', views.model_test_pac, name='model_test_pac'),
     path('models_test/student', views.model_test_student, name='model_test_student'),
-    path('register/',views.register_view, name = 'register_view'),
+    path('register/',views.register_home, name = 'register_home'),
+    path('register/student',views.register_student, name = 'register_student'),
+    path('register/pac',views.register_pac, name = 'register_pac'),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 # /* from django.urls import path

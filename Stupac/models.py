@@ -89,8 +89,9 @@ class Student(Generic_User):
     dob = models.DateField
     gender = models.CharField(blank=True, null=True,max_length=16)
     course = models.CharField(blank=True, null=True,max_length=64)
-    assigned_pac = models.ForeignKey("Pac", db_column='assigned_pac', on_delete=CASCADE)
-
+    #assigned_pac = models.ForeignKey("Pac", db_column='assigned_pac', on_delete=CASCADE) #foreign key removed for login system functionality
+    pac_first_name = models.TextField(blank=True, null=True, max_length=32)  # This may be redundant
+    pac_last_name = models.TextField(blank=True, null=True, max_length=32)  # This may be redundant
     class Meta:
         db_table = 'student'
 

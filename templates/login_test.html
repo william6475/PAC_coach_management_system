@@ -1,10 +1,9 @@
-{% extends 'layout.html' %}
+{% extends 'login.html' %}
 {% block title %}
     User Login
 {% endblock %}
 
 {% block content %}
-    <h1>User Login</h1>
     <!-- Change the path in action if you want a user to be redirected. -->
     <form action = "" method = "post">
     {% csrf_token %}
@@ -12,6 +11,8 @@
         {% if request.GET.next %}
             <input type = "hidden" name = "next" value = "{{ request.GET.next }}">
         {% endif %}
-    <button type = "submit">Submit</button>
+    <label>
+        <input type="submit" value = "Log in">
+    </label>
     </form>
 {% endblock %}
