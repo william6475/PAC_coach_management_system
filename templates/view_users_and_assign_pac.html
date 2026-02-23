@@ -99,17 +99,23 @@
 <h1>Assign PAC to student</h1>
 <br>
 <!-Assign PAC form>
-<form>
-    <label>Student number<label class="Mandatory_field_label">*</label>
-        <input type="Text">
+<form method="post" action = "">
+    {% csrf_token %}
+    <label>Student email<label class="Mandatory_field_label">*</label>
+        <input type="Text" id = 'student_email'>
     </label>
     <label>PAC first name<label class="Mandatory_field_label">*</label>
-        <input type="Text">
+        <input type="Text" id = 'pac_first_name'>
     </label>
     <label>PAC last name<label class="Mandatory_field_label">*</label>
-        <input type="Text">
+        <input type="Text" id = 'pac_last_name'>
     </label>
-    <input type="submit" value="Assign PAC">
+    {% if assignment_status == True %}
+        <label>Successfully assigned PAC to Student</label>
+    {% endif %}
+    <label>
+        <input type="submit" value="Assign PAC">
+    </label>
 </form>
 </div>
     </div>

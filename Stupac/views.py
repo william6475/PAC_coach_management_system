@@ -172,22 +172,18 @@ def view_users_and_assign_pac(request):
     # A problem with this query causes the results list to break when user_name is not empty
     user_emails = Generic_User.objects.raw("select id, email from main.Stupac_generic_user where first_name OR last_name LIKE '%" + user_name + "%'")
 
-    students = Student.objects.all()
-
-    pacs = Pac.objects.all()
     if request.method == "POST":
-        student_id = request.POST.get("student_id")
-        pac_id = request.POST.get("pac_id")
-
-        student = get_object_or_404(Student, pk=student_id)
-        student.assigned_pac_id = pac_id
-        student.save()
-
-        #return redirect("student_home")
+        student_email = str(request.POST.get("student_email"))
+        pac_first_name = str(request.POST.get("pac_first_name"))
+        pac_last_name = str(request.POST.get("pac_last_name"))
+        if len(student_email)>=1 and len(pac_first_name)>=1 and len(pac_last_name)>=1:
+            pac_assignment = Student.objects.raw("update main.student set pac_first_name = '" + pac_first_name + "', pac_last_name = '" + pac_last_name + "' where student_email = '" + student_email + "'")
+            assignment_status = True
+    else:
+        assignment_status = False
     return render(request, "view_users_and_assign_pac.html", {
         "user_emails" : user_emails,
-        "students": students,
-        "pacs": pacs
+        "assignment_status" : assignment_status,
     })
 
 
