@@ -28,7 +28,10 @@ def login_view(request):
         form = AuthenticationForm(data=request.POST)
         if form.is_valid():
             login(request, form.get_user())
-            return redirect('admin_home')
+            if "next" in request.POST:
+                return redirect(request.POST.get("next"))
+            else:
+                return redirect('admin_home')
     else:
         form = AuthenticationForm()
     return render(request, "login_test.html", {"form": form})
@@ -53,14 +56,14 @@ def login_page(request):
     return HttpResponse(template.render(context, request))
 
 
-#@login_required
+@login_required(login_url="/login/")
 #@user_passes_test(is_admin)
 def admin_home(request):
     template = loader.get_template('admin_home.html')
     context = {}
     return HttpResponse(template.render(context, request))
 
-#@login_required
+#@login_required(login_url="/login/")
 #@user_passes_test(is_student)
 def student_home(request):
     student_id = "1" #This is a placeholder, replace with login system authentication
@@ -76,7 +79,7 @@ def student_home(request):
     }
     return HttpResponse(template.render(context, request))
 
-#@login_required
+#@login_required(login_url="/login/")
 #@user_passes_test(is_pac)
 def pac_home(request):
     template = loader.get_template('pac_home.html')

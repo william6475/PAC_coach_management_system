@@ -14,11 +14,15 @@
     <nav>
         <a href="{% url 'student_home' %}">Student</a>
         <a href="{% url 'pac_home' %}">Pac</a>
-        <a href="{% url 'admin_home' %}">Admin</a>
-        <form class = "logout" action="{% url 'logout' %}" method="POST">
+        {% if user.is_authenticated %}
+            <form class = "logout" action="{% url 'logout' %}" method="POST">
             {% csrf_token %}
             <button type="submit">Logout</button>
         </form>
+        {% else %}
+            <a href="{% url 'admin_home' %}">Admin</a>
+        {% endif %}
+
     </nav>
 <main>
     {% block content %}
