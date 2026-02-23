@@ -77,7 +77,7 @@
 <body>
 <!--Navbar-->
 <div class="topnav">
-    <a href="{% url 'enrol_user' %}" class="active">Enrol user</a>
+    <a href="{% url 'register_home' %}" class="active">Register a user</a>
     <a href="{% url 'view_users_and_assign_pac' %}">View users and assign pac</a>
     {% if user.is_authenticated %}
             <form class = "logout" action="{% url 'logout' %}" method="POST">
@@ -95,9 +95,9 @@
     <div class="login-box">
 <h1>Admin home</h1>
 <!--Buttons-->
-        <a href="{% url 'enrol_user' %}">
+        <a href="{% url 'register_home' %}">
         <label>
-        <input type="submit" value = "Enrol user">
+        <input type="submit" value = "Register Users">
          </label>
         </a>
 <br>

@@ -6,16 +6,18 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
 from django import forms
-
 import Stupac.models
-from Stupac.models import Admin, Pac, Student
+import Stupac.tests
+from Stupac.models import Admin, Pac, Student, Generic_User
 from Stupac.tests import is_admin, is_student, is_pac
-
 from django.shortcuts import render, redirect, get_object_or_404
 from django.template.loader import render_to_string
 from django.http import JsonResponse
 
+
 # Temporary views for testing
+
+# End of temporary views
 class RegistrationForm(UserCreationForm):
     first_name = forms.CharField()
     last_name = forms.CharField()
@@ -82,8 +84,6 @@ def logout_view(request):
     if request.method == "POST":
         logout(request)
         return redirect('admin_home')
-
-# End of temporary views
 
 # Views created here
 def temp_here(request):
@@ -165,9 +165,16 @@ def enrol_user(request):
 #@login_required
 #@user_passes_test(is_admin)
 def view_users_and_assign_pac(request):
-    students = Student.objects.all()
-    pacs = Pac.objects.all()
+    if request.GET.get("user_name"):
+        user_name = request.GET.get("user_name")
+    else:
+        user_name=""
+    # A problem with this query causes the results list to break when user_name is not empty
+    user_emails = Generic_User.objects.raw("select id, email from main.Stupac_generic_user where first_name OR last_name LIKE '%" + user_name + "%'")
 
+    students = Student.objects.all()
+
+    pacs = Pac.objects.all()
     if request.method == "POST":
         student_id = request.POST.get("student_id")
         pac_id = request.POST.get("pac_id")
@@ -177,8 +184,8 @@ def view_users_and_assign_pac(request):
         student.save()
 
         #return redirect("student_home")
-
     return render(request, "view_users_and_assign_pac.html", {
+        "user_emails" : user_emails,
         "students": students,
         "pacs": pacs
     })

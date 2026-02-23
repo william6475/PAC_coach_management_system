@@ -4,7 +4,7 @@ from Stupac import views
 from django.conf import settings
 from django.conf.urls.static import static
 urlpatterns = [
-    path('', views.login_page, name='login_page'),
+    path('', views.login_view, name='login_page'),
     path('login/', views.login_view, name='login'),
     path('logout/', views.logout_view, name='logout'),
     path('admin_home/', views.admin_home, name='admin_home'),
@@ -15,8 +15,6 @@ urlpatterns = [
     path('view_users_and_assign_pac/', views.view_users_and_assign_pac, name='view_users_and_assign_pac'),
     path('students/', views.student_home, name='student_list'),
     path('students/create/', views.enrol_user, name='student_create'),
-    path('students/edit/<int:student_id>/', views.edit_student, name='edit_student'),
-    path('students/delete/<int:student_id>/', views.delete_student, name='delete_student'),
     path('students/assign/', views.view_users_and_assign_pac, name='assign_pac'),
     path('models_test/admin', views.model_test_admin, name='model_test_admin'),
     path('models_test/pac', views.model_test_pac, name='model_test_pac'),
@@ -24,6 +22,8 @@ urlpatterns = [
     path('register/',views.register_home, name = 'register_home'),
     path('register/student',views.register_student, name = 'register_student'),
     path('register/pac',views.register_pac, name = 'register_pac'),
+    path('students/edit/<int:student_id>/', views.edit_student, name='edit_student'),
+    path('students/delete/<int:student_id>/', views.delete_student, name='delete_student'),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 # /* from django.urls import path
