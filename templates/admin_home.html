@@ -80,9 +80,9 @@
     <a href="{% url 'register_home' %}" class="active">Register a user</a>
     <a href="{% url 'view_users_and_assign_pac' %}">View users and assign pac</a>
     {% if user.is_authenticated %}
-            <form class = "logout" action="{% url 'logout' %}" method="POST">
+            <form class = "logout" action="" method="POST">
             {% csrf_token %}
-            <a style="float:right" href="{% url 'login' %}">Sign out</a>
+            <a style="float:right" href="{% url 'logout_view' %}">Sign out</a>
         </form>
     {% endif %}
 </div>

@@ -1,4 +1,4 @@
-from django.contrib.auth import authenticate
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.shortcuts import render
 from django.http import HttpResponse
@@ -93,10 +93,12 @@ def login_view(request):
         form = AuthenticationForm()
     return render(request, "login_test.html", {"form": form})
 
+@login_required(login_url="/login/")
 def logout_view(request):
     if request.method == "POST":
         logout(request)
-        return redirect('admin_home')
+        return redirect('login_page')
+    return render(request, "admin_home.html")
 
 # Views created here
 def temp_here(request):
