@@ -43,6 +43,17 @@
         .Lookup_results tr:nth-child(even) {
             background-color: #f2f2f2;
         }
+
+        .login-box input[type="text"],
+        .login-box input[type="email"],
+        .login-box input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
     </style>
     <title>View users and assign PAC</title>
     <link rel="icon" href="data:,">
@@ -67,9 +78,20 @@
 <!-Assign PAC form>
 <form method="post" action="{% url 'assign_pac' %}">
     {% csrf_token %}
+    <!--
+    <label>Student Email:
+        <input type="email" name="student_email" placeholder="Enter email address" required>
+    </label>
+    <label>Pac First Name:
+        <input type="text" name="pac_first_name" placeholder="Enter first name" required>
+    </label>
+    <label>Pac Last Name:
+        <input type="text" name="pac_last_name" placeholder="Enter last name" required>
+    </label>
+    -->
     <div class="form-group">
         <label id = 'student_email' >Email:
-        {{ user_form.email }}
+        {{ user_form.student_email }}
             </label>
         <label id = 'pac_first_name' >Pac First Name:
         {{ user_form.pac_first_name }}

@@ -18,14 +18,14 @@ from django.http import JsonResponse
 
 # Temporary views for testing
 class UpdateUserForm(UserChangeForm):
-    email = forms.EmailField(required=True, widget=forms.TextInput(attrs={'class': 'form-control'}))
+    student_email = forms.CharField(max_length=32,required=True,widget=forms.TextInput(attrs={'class': 'form-control'}))
     pac_first_name = forms.CharField(max_length=32,
                                required=True,
                                widget=forms.TextInput(attrs={'class': 'form-control'}))
     pac_last_name = forms.CharField(max_length=32,required=True,widget=forms.TextInput(attrs={'class': 'form-control'}))
     class Meta:
         model = Stupac.models.Student
-        fields = ("pac_first_name", "pac_last_name")
+        fields = ("email","pac_first_name", "pac_last_name")
 # End of temporary views
 
 
@@ -194,6 +194,21 @@ def view_users(request):
 
 @login_required(login_url="/login/")
 def assign_pac(request):
+
+    """
+    #This method does not work
+    if request.method == 'POST':
+        student_email = str(request.POST.get("student_email"))
+        pac_first_name = str(request.POST.get("pac_first_name"))
+        pac_last_name = str(request.POST.get("pac_last_name"))
+        generic_id = str(request.user.id)
+        fetch_student_id = Student.objects.raw(
+            "Select student_id from student where generic_user_ptr_id = '" + generic_id + "'")
+        student_id = str(fetch_student_id[0].student_id)
+        Student.objects.raw("Update student set student_email = '"+student_email+"', pac_first_name = '"+pac_first_name+"',pac_last_name = '"+pac_last_name+ "' where student_id = '" + student_id + "'")
+    return render(request, 'assign_pac.html', {})
+    """
+    """
     if request.method == 'POST':
         user_form = UpdateUserForm(request.POST, instance=request.user)
 
@@ -211,10 +226,12 @@ def assign_pac(request):
         user_form = UpdateUserForm(instance=request.user)
 
     return render(request, 'assign_pac.html', {'user_form': user_form})
+    
     """
-
     if request.user.is_authenticated:
-        user_form = UpdateUserForm(request.POST, instance=request.user)
+        current_user = Generic_User.objects.get(id=request.user.id)
+
+        user_form = UpdateUserForm(request.POST, instance=current_user)
 
         if user_form.is_valid():
             user_form.save()
@@ -225,19 +242,6 @@ def assign_pac(request):
     else:
         messages.success(request, "update unsuccessful: you must login to access this feature")
         return redirect('login')
-    """
-    """
-    if request.method == "POST":
-        student_email = str(request.POST.get("student_email"))
-        pac_first_name = str(request.POST.get("pac_first_name"))
-        pac_last_name = str(request.POST.get("pac_last_name"))
-        pac_assignment = Student.objects.raw("update main.student set pac_first_name = '" + pac_first_name + "', pac_last_name = '" + pac_last_name + "' where student_email = '" + student_email + "'")
-        assignment_status = True
-    else:
-        assignment_status = False
-    context = {"assignment_status" : assignment_status}
-    return HttpResponse(template.render(context, request))
-    """
 
 #@login_required
 #@user_passes_test(is_admin)
