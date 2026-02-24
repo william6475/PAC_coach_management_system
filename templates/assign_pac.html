@@ -1,0 +1,108 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{% static 'stupac_template/styles.css' %}?v=16">
+    <style>
+
+        .main-content {
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+        }
+        .login-box {
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            width: 80%;
+            max-width: 480px;
+            margin-top: 250px; /* Space for the absolute logo */
+        }
+        .Lookup_results table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: white;
+        }
+
+        .Lookup_results th, .Lookup_results td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        .Lookup_results th {
+            background-color: #63918f;
+            color: white;
+        }
+
+        .Lookup_results tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+    </style>
+    <title>View users and assign PAC</title>
+    <link rel="icon" href="data:,">
+</head>
+<body>
+<!--Navbar-->
+<div class="topnav">
+    <a href="{% url 'admin_home' %}">Admin home</a>
+    <a href="{% url 'enrol_user' %}">Enrol user</a>
+    <a href="{% url 'view_users_and_assign_pac' %}" class="active">View users and assign pac</a>
+    <a style="float:right" href="{% url 'login' %}">Sign out</a>
+</div>
+<div class="background-animation">
+     <div class="wave"></div>
+     <div class="wave"></div>
+     <div class="wave"></div>
+  </div>
+<div class="main-content">
+    <div class = "login-box">
+<h1>Assign PAC to student</h1>
+<br>
+<!-Assign PAC form>
+<form method="post" action="{% url 'assign_pac' %}">
+    {% csrf_token %}
+    <div class="form-group">
+        <label id = 'student_email' >Email:
+        {{ user_form.email }}
+            </label>
+        <label id = 'pac_first_name' >Pac First Name:
+        {{ user_form.pac_first_name }}
+            </label>
+        <label id = 'pac_last_name' >Pac Last Name:
+        {{ user_form.pac_last_name }}
+        </label>
+    </div>
+    <label>
+        <input type="submit" value="Assign PAC">
+    </label>
+</form>
+<!--
+    <label>Student email<label class="Mandatory_field_label">*</label>
+        <input type="Text" id = 'student_email'>
+    </label>
+    <label>PAC first name<label class="Mandatory_field_label">*</label>
+        <input type="Text" id = 'pac_first_name'>
+    </label>
+    <label>PAC last name<label class="Mandatory_field_label">*</label>
+        <input type="Text" id = 'pac_last_name'>
+    </label>
+    {% if assignment_status == True %}
+        <label>Successfully assigned PAC to Student</label>
+    {% else %}
+        <label>Unsucsessful assignment</label>
+    {% endif %}
+    <label>
+        <input type="submit" value="Assign PAC">
+    </label>
+</form>
+-->
+</div>
+    </div>
+</body>
+</html>

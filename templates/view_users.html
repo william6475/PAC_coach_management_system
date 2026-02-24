@@ -1,0 +1,98 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{% static 'stupac_template/styles.css' %}?v=16">
+    <style>
+
+        .main-content {
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+        }
+        .login-box {
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            width: 80%;
+            max-width: 480px;
+            margin-top: 250px; /* Space for the absolute logo */
+        }
+        .Lookup_results table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: white;
+        }
+
+        .Lookup_results th, .Lookup_results td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        .Lookup_results th {
+            background-color: #63918f;
+            color: white;
+        }
+
+        .Lookup_results tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+    </style>
+    <title>View users and assign PAC</title>
+    <link rel="icon" href="data:,">
+    <script>
+        const searchParams = new URLSearchParams(window.location.search);//gets the url parameters
+        let searchTerm = searchParams.get("user_name");
+    </script>
+</head>
+<body>
+<!--Navbar-->
+<div class="topnav">
+    <a href="{% url 'admin_home' %}">Admin home</a>
+    <a href="{% url 'enrol_user' %}">Enrol user</a>
+    <a href="{% url 'view_users_and_assign_pac' %}" class="active">View users and assign pac</a>
+    <a style="float:right" href="{% url 'login' %}">Sign out</a>
+</div>
+<div class="background-animation">
+     <div class="wave"></div>
+     <div class="wave"></div>
+     <div class="wave"></div>
+  </div>
+<div class="main-content">
+    <div class = "login-box">
+<h1>View users</h1>
+
+<!--Search bar-->
+<label>
+    <form>
+        <input type="text" name = "user_name" id="user_name" placeholder="Search by email" class="Widened_form_field" autofocus>
+    </form>
+</label>
+<br>
+<br>
+<!--Search results-->
+<!--Search results-->
+<div class="Lookup_results">
+    <table>
+        <thead>
+            <tr>
+                <th>Results</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for emails in user_emails %}
+                <tr><td>{{ emails.email }}</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+</div>
+</div>
+</body>
+</html>
