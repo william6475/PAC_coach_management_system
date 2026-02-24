@@ -20,7 +20,7 @@ from django.http import JsonResponse
 
 # Temporary views for testing
 class UpdateUserForm(UserChangeForm):
-    student_email = forms.CharField(max_length=32,required=True,widget=forms.TextInput(attrs={'class': 'form-control'}))
+    #student_email = forms.CharField(max_length=32,required=True,widget=forms.TextInput(attrs={'class': 'form-control'}))
     pac_first_name = forms.CharField(max_length=32,
                                required=True,
                                widget=forms.TextInput(attrs={'class': 'form-control'}))
@@ -28,6 +28,9 @@ class UpdateUserForm(UserChangeForm):
     class Meta:
         model = Stupac.models.Student
         fields = ("email","pac_first_name", "pac_last_name")
+
+def is_user_in_group(user, group_name):
+    return user.groups.filter(name=group_name).exists()
 # End of temporary views
 
 
@@ -57,7 +60,7 @@ class StudentRegistrationForm(UserCreationForm):
     pac_last_name = forms.CharField()
     class Meta:
         model = Stupac.models.Student
-        fields = ( "email", "student_first_name", "student_last_name",  "gender","course","pac_first_name","pac_last_name", "password1", "password2")
+        fields = ("email", "student_first_name", "student_last_name",  "gender","course","pac_first_name","pac_last_name", "password1", "password2")
 
 
 def register_student(request):
@@ -75,7 +78,7 @@ def register_pac(request):
         form = PacRegistrationForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('admin_home')
+            return redirect('login')
     else:
         form = PacRegistrationForm()
     return render(request, "register.html",{"form":form, "input_name" : 'Pac'})
@@ -84,9 +87,20 @@ def login_view(request):
     if request.method == "POST":
         form = AuthenticationForm(data=request.POST)
         if form.is_valid():
+            user_email = str(form.get_user())
             login(request, form.get_user())
+            student_result = Student.objects.raw("select student_id from student where student_email = '"+user_email+"'")
+            pac_result = Pac.objects.raw("select pac_id from pac where pac_email = '" + user_email + "'")
+            admin_result = Admin.objects.raw("select admin_id from admin where admin_email = '" + user_email + "'")
             if "next" in request.POST:
                 return redirect(request.POST.get("next"))
+
+            #if str(admin_result[0].admin_id) is not None:
+                #return redirect('admin_home')
+            #if str(pac_result[0].pac_id) is not None:
+                #return redirect('pac_home')
+            #if str(student_result[0].student_id) is not None:
+                #return redirect('student_home')
             else:
                 return redirect('admin_home')
     else:
@@ -124,13 +138,29 @@ def admin_home(request):
     context = {}
     return HttpResponse(template.render(context, request))
 
+def setStudentEmail(generic_id):
+    get_email = Generic_User.objects.raw("select id, email from Stupac_generic_user where id = '"+generic_id+"'")
+    student_email = str(get_email[0].email)
+    student_id = str(get_email[0].id)
+    Student.objects.raw("update student set student_email = '"+student_email+"' where generic_user_ptr_id = '"+student_id+"'")
+    return True
+
+
 @login_required(login_url="/login/")
 #@user_passes_test(is_student)
 def student_home(request):
     #student_id = "1" #This is a placeholder, replace with login system authentication
     generic_id = str(request.user.id)
+    #setStudentEmail(generic_id)
+    get_email = Generic_User.objects.raw("select id, email from Stupac_generic_user where id = '" + generic_id + "'")
+    student_email = str(get_email[0].email)
     fetch_student_id = Student.objects.raw("Select student_id from student where generic_user_ptr_id = '"+generic_id+"'")
     student_id = str(fetch_student_id[0].student_id)
+
+    user = Student.objects.get(student_id=student_id)
+    user.student_email = student_email
+    user.save(update_fields=['student_email'])
+
     student_details = Student.objects.raw("Select * from student where student_id = '" + student_id + "'")
     student_pac_fname = str(student_details[0].pac_first_name)
     student_pac_lname = str(student_details[0].pac_last_name)
@@ -151,12 +181,15 @@ def pac_home(request):
     generic_id = str(request.user.id)
     fetch_pac_name = Pac.objects.raw(
         "Select pac_first_name, pac_id from pac where generic_user_ptr_id = '" + generic_id + "'")
-    pac_name= str(fetch_pac_name[0].pac_first_name)
+    if fetch_pac_name[0].pac_first_name is not None:
+        pac_name= str(fetch_pac_name[0].pac_first_name)
     #pac_id = "2" #This is a placeholder, replace with login system authentication
     #pac_details = Pac.objects.raw("Select * from pac where pac_id = '" + pac_id+"'")
     pac_details = Pac.objects.raw("Select * from pac where pac_first_name = '"+pac_name+"'") #This is a placeholder, replace with login system authentication
-    pac_fname = str(pac_details[0].pac_first_name)
-    pac_lname = str(pac_details[0].pac_last_name)
+    if pac_details[0].pac_first_name is not None:
+        pac_fname = str(pac_details[0].pac_first_name)
+    if pac_details[0].pac_last_name is not None:
+        pac_lname = str(pac_details[0].pac_last_name)
     if request.GET.get("student_name"):
         student_name = request.GET.get("student_name")
     else:
@@ -199,19 +232,23 @@ def view_users(request):
 @login_required(login_url="/login/")
 def assign_pac(request):
 
-    """
     #This method does not work
     if request.method == 'POST':
         student_email = str(request.POST.get("student_email"))
         pac_first_name = str(request.POST.get("pac_first_name"))
         pac_last_name = str(request.POST.get("pac_last_name"))
+        student = Student.objects.get(student_email=student_email)
+        student.pac_first_name = pac_first_name
+        student.pac_last_name = pac_last_name
+        student.save(update_fields=['pac_first_name','pac_last_name'])
+        """
         generic_id = str(request.user.id)
         fetch_student_id = Student.objects.raw(
             "Select student_id from student where generic_user_ptr_id = '" + generic_id + "'")
         student_id = str(fetch_student_id[0].student_id)
         Student.objects.raw("Update student set student_email = '"+student_email+"', pac_first_name = '"+pac_first_name+"',pac_last_name = '"+pac_last_name+ "' where student_id = '" + student_id + "'")
+        """
     return render(request, 'assign_pac.html', {})
-    """
     """
     if request.method == 'POST':
         user_form = UpdateUserForm(request.POST, instance=request.user)
@@ -232,21 +269,22 @@ def assign_pac(request):
     return render(request, 'assign_pac.html', {'user_form': user_form})
     
     """
+
+    """
     if request.user.is_authenticated:
         current_user = Generic_User.objects.get(id=request.user.id)
-
+        generic_id = str(request.user.id)
         user_form = UpdateUserForm(request.POST, instance=current_user)
-
         if user_form.is_valid():
+
             user_form.save()
             messages.success(request, "PAC successfully updated")
             return redirect('student_home')
-
-        return render(request,'assign_pac.html',{'user_form':user_form})
+        return render(request,'admin_home.html',{'user_form':user_form})
     else:
         messages.success(request, "update unsuccessful: you must login to access this feature")
         return redirect('login')
-
+    """
 #@login_required
 #@user_passes_test(is_admin)
 def view_users_and_assign_pac(request):
@@ -290,25 +328,3 @@ def edit_student(request, student_id):
         #return redirect("student_home")
 
     return render(request, "enrol_user.html", {"student": student})
-
-
-def model_test_admin(request):
-    random_item = Admin.objects.all().order_by('?').first()
-    temp = random_item.admin_first_name
-    template = loader.get_template('model_test.html')
-    context = {'random_item': temp}
-    return HttpResponse(template.render(context, request))
-
-def model_test_pac(request):
-    random_item = Pac.objects.all().order_by('?').first()
-    temp = random_item.pac_first_name
-    template = loader.get_template('model_test.html')
-    context = {'random_item': temp}
-    return HttpResponse(template.render(context, request))
-
-def model_test_student(request):
-    random_item = Student.objects.all().order_by('?').first()
-    temp = random_item.student_first_name
-    template = loader.get_template('model_test.html')
-    context = {'random_item': temp}
-    return HttpResponse(template.render(context, request))

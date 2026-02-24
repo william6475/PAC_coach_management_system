@@ -76,9 +76,8 @@
 <h1>Assign PAC to student</h1>
 <br>
 <!-Assign PAC form>
-<form method="post" action="{% url 'assign_pac' %}">
+<form method="post" action="">
     {% csrf_token %}
-    <!--
     <label>Student Email:
         <input type="email" name="student_email" placeholder="Enter email address" required>
     </label>
@@ -88,7 +87,10 @@
     <label>Pac Last Name:
         <input type="text" name="pac_last_name" placeholder="Enter last name" required>
     </label>
-    -->
+    <label>
+        <input type="submit" value="Assign PAC">
+    </label>
+    <!--
     <div class="form-group">
         <label id = 'student_email' >Email:
         {{ user_form.student_email }}
@@ -102,7 +104,7 @@
     </div>
     <label>
         <input type="submit" value="Assign PAC">
-    </label>
+    </label> -->
 </form>
 <!--
     <label>Student email<label class="Mandatory_field_label">*</label>
