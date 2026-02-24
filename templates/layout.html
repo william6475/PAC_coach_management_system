@@ -1,13 +1,16 @@
-
-<!Doctype html>
+<!DOCTYPE html>
 {% load static %}
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="{% static 'stupac_template/styles.css' %}?v=16">
-    <style>
+    <title>
+        {% block title %}
+            Django App
+        {% endblock %}
+    </title>
+<link rel="stylesheet" href="{% static 'stupac_template/styles.css' %}?v=16">
+<style>
         body, html {
             margin: 0;
             padding: 0;
@@ -33,7 +36,7 @@
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
             text-align: center;
             width: 100%;
-            max-width: 400px;
+            max-width: 500px;
             margin-top: 250px; /* Space for the absolute logo */
         }
 
@@ -49,6 +52,15 @@
         .topPad{
             padding-top: 90px;
         }
+        .login-box form {
+             width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 10px;
+        }
 
         .login-box form label {
             display: block;
@@ -56,8 +68,13 @@
             margin-bottom: 10px;
             text-align: left;
         }
+        .helptext {
+            font-size: 14px;
+            text-align: left;
+        }
 
         .login-box input[type="text"],
+        .login-box input[type="email"],
         .login-box input[type="password"] {
             width: 100%;
             padding: 10px;
@@ -77,6 +94,7 @@
             cursor: pointer;
             font-size: 16px;
             margin-top: 10px;
+            margin-bottom: 10px;
         }
         .login-box input[type="submit"]:hover {
             background-color: #486a69;
@@ -110,36 +128,28 @@
         }
         }
     </style>
-    <title>Login</title>
-    <link rel="icon" href="data:,">
 </head>
 <body>
-  <div class="background-animation">
+<div class="topnav">
+    <a href="{% url 'register_home' %}" class="active">Register a user</a>
+    <a href="{% url 'view_users_and_assign_pac' %}">View users and assign pac</a>
+    {% if user.is_authenticated %}
+            <form class = "logout" action="{% url 'logout' %}" method="POST">
+            {% csrf_token %}
+            <a style="float:right" href="{% url 'login' %}">Sign out</a>
+        </form>
+    {% endif %}
+</div>
+<div class="background-animation">
      <div class="wave"></div>
      <div class="wave"></div>
      <div class="wave"></div>
   </div>
-
+<main>
 <div class="main-content topPad">
 <div  class="login-box">
-<!--<h1>Login</h1> -->
-    <img src="{% static 'stupac_template/logo-dark.png' %}" alt="Logo" class=" login-logo">
-<!--Input form-->
     {% block content %}
     {% endblock %}
-<!--
-<form>
-    <label>Username
-        <input type="text">
-    </label>
-        <label>Password
-        <input type="password">
-    </label>
-    <label>
-        <input type="submit" value = "Log in">
-    </label>
-</form> -->
 </div>
 </div>
-</body>
-</html>
+</main>

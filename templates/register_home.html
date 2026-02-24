@@ -71,7 +71,7 @@
         }
 
     </style>
-    <title>Admin home</title>
+    <title>Register</title>
     <link rel="icon" href="data:,">
 </head>
 <body>
@@ -93,18 +93,18 @@
   </div>
 <div class="main-content">
     <div class="login-box">
-<h1>Admin home</h1>
+<h1>Registration</h1>
 <!--Buttons-->
-        <a href="{% url 'register_home' %}">
+        <a href="{% url 'register_pac' %}">
         <label>
-        <input type="submit" value = "Register Users">
+        <input type="submit" value = "Register a PAC">
          </label>
         </a>
 <br>
 <br>
-        <a href="{% url 'view_users_and_assign_pac'%}">
+        <a href="{% url 'register_student'%}">
         <label>
-        <input type="submit" value = "View users and assign pac">
+        <input type="submit" value = "Register a Student">
          </label>
         </a>
 </div>

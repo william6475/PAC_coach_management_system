@@ -4,7 +4,9 @@ from Stupac import views
 from django.conf import settings
 from django.conf.urls.static import static
 urlpatterns = [
-    path('', views.login_page, name='login_page'),
+    path('', views.login_view, name='login_page'),
+    path('login/', views.login_view, name='login'),
+    path('logout/', views.logout_view, name='logout'),
     path('admin_home/', views.admin_home, name='admin_home'),
     path('enrol_user/', views.enrol_user, name='enrol_user'),
     path('pac_home/',views.pac_home, name='pac_home'),
@@ -19,9 +21,11 @@ urlpatterns = [
     path('models_test/admin', views.model_test_admin, name='model_test_admin'),
     path('models_test/pac', views.model_test_pac, name='model_test_pac'),
     path('models_test/student', views.model_test_student, name='model_test_student'),
-
-    # path('search/',views.search_view, name='search_view'),
-
+    path('register/',views.register_home, name = 'register_home'),
+    path('register/student',views.register_student, name = 'register_student'),
+    path('register/pac',views.register_pac, name = 'register_pac'),
+    path('students/edit/<int:student_id>/', views.edit_student, name='edit_student'),
+    path('students/delete/<int:student_id>/', views.delete_student, name='delete_student'),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 # /* from django.urls import path

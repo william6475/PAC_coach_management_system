@@ -1,0 +1,16 @@
+{% extends 'layout.html' %}
+{% block title %}
+    Register a New {{ input_name }}
+{% endblock %}
+
+{% block content %}
+    <h1>Register a {{ input_name }}</h1>
+    <!-- Change the path in action if you want a user to be redirected. -->
+    <form action = "" method = "post">
+    {% csrf_token %}
+    {{ form }}
+    <label>
+        <input type="submit" value = "Enroll {{ input_name }}">
+    </label>
+    </form>
+{% endblock %}

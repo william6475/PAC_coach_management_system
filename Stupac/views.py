@@ -3,16 +3,89 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.template import loader
-from Stupac.models import Admin, Pac, Student
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth.models import User
+from django import forms
+import Stupac.models
+import Stupac.tests
+from Stupac.models import Admin, Pac, Student, Generic_User
 from Stupac.tests import is_admin, is_student, is_pac
 
 from django.shortcuts import render, redirect, get_object_or_404
 from django.template.loader import render_to_string
 from django.http import JsonResponse
 
+
 # Temporary views for testing
 
 # End of temporary views
+class RegistrationForm(UserCreationForm):
+    first_name = forms.CharField()
+    last_name = forms.CharField()
+    class Meta:
+        model = Stupac.models.Generic_User
+        fields = ( "email", "first_name", "last_name", "password1", "password2")
+
+class PacRegistrationForm(UserCreationForm):
+    pac_first_name = forms.CharField()
+    pac_last_name = forms.CharField()
+    gender = forms.CharField()
+    department = forms.CharField()
+    class Meta:
+        model = Stupac.models.Pac
+        fields = ( "email", "pac_first_name", "pac_last_name", "gender","department", "password1", "password2")
+
+
+class StudentRegistrationForm(UserCreationForm):
+    student_first_name = forms.CharField()
+    student_last_name = forms.CharField()
+    gender = forms.CharField()
+    course = forms.CharField()
+    pac_first_name = forms.CharField()
+    pac_last_name = forms.CharField()
+    class Meta:
+        model = Stupac.models.Student
+        fields = ( "email", "student_first_name", "student_last_name",  "gender","course","pac_first_name","pac_last_name", "password1", "password2")
+
+
+def register_student(request):
+    if request.method == "POST":
+        form = StudentRegistrationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('admin_home')
+    else:
+        form = StudentRegistrationForm()
+    return render(request, "register.html",{"form":form, "input_name" : 'Student'})
+
+def register_pac(request):
+    if request.method == "POST":
+        form = PacRegistrationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('admin_home')
+    else:
+        form = PacRegistrationForm()
+    return render(request, "register.html",{"form":form, "input_name" : 'Pac'})
+
+def login_view(request):
+    if request.method == "POST":
+        form = AuthenticationForm(data=request.POST)
+        if form.is_valid():
+            login(request, form.get_user())
+            if "next" in request.POST:
+                return redirect(request.POST.get("next"))
+            else:
+                return redirect('admin_home')
+    else:
+        form = AuthenticationForm()
+    return render(request, "login_test.html", {"form": form})
+
+def logout_view(request):
+    if request.method == "POST":
+        logout(request)
+        return redirect('admin_home')
 
 # Views created here
 def temp_here(request):
@@ -26,21 +99,26 @@ def login_page(request):
     context = {}
     return HttpResponse(template.render(context, request))
 
+def register_home(request):
+    template = loader.get_template('register_home.html')
+    context = {}
+    return HttpResponse(template.render(context, request))
 
-#@login_required
+@login_required(login_url="/login/")
 #@user_passes_test(is_admin)
 def admin_home(request):
     template = loader.get_template('admin_home.html')
     context = {}
     return HttpResponse(template.render(context, request))
 
-#@login_required
+#@login_required(login_url="/login/")
 #@user_passes_test(is_student)
 def student_home(request):
     student_id = "1" #This is a placeholder, replace with login system authentication
     student_details = Student.objects.raw("Select * from student where student_id = '" + student_id + "'")
-    student_pac = str(student_details[0].assigned_pac_id)
-    pac_details = Pac.objects.raw("Select * from pac where pac_id = '" + student_pac + "'")
+    student_pac_fname = str(student_details[0].pac_first_name)
+    student_pac_lname = str(student_details[0].pac_last_name)
+    pac_details = Pac.objects.raw("Select * from pac where pac_first_name = '" + student_pac_fname + "' and pac_last_name = '"+student_pac_lname+"'")
     template = loader.get_template('student_home.html')
     context = {
         'pac_first_name' : pac_details[0].pac_first_name,
@@ -50,16 +128,21 @@ def student_home(request):
     }
     return HttpResponse(template.render(context, request))
 
-#@login_required
+#@login_required(login_url="/login/")
 #@user_passes_test(is_pac)
 def pac_home(request):
     template = loader.get_template('pac_home.html')
-    pac_id = "1" #This is a placeholder, replace with login system authentication
-    if (request.GET.get("student_name")):
+    #pac_id = "2" #This is a placeholder, replace with login system authentication
+    #pac_details = Pac.objects.raw("Select * from pac where pac_id = '" + pac_id+"'")
+    pac_details = Pac.objects.raw("Select * from pac where pac_first_name = 'Clara'") #This is a placeholder, replace with login system authentication
+    pac_fname = str(pac_details[0].pac_first_name)
+    pac_lname = str(pac_details[0].pac_last_name)
+    if request.GET.get("student_name"):
         student_name = request.GET.get("student_name")
     else:
         student_name = ""
-    student_details = Student.objects.raw("Select * from student where student_first_name LIKE '%" + student_name + "%' and assigned_pac = '" + pac_id + "'")
+    #The line below may flag an error, but is correct.
+    student_details = Student.objects.raw("Select * from student where student_first_name LIKE '%" + student_name + "%' and pac_first_name = '" + pac_fname + "' and pac_last_name = '"+pac_lname+"'")
     context = {
         'student_details' : student_details,
     }
@@ -84,22 +167,25 @@ def enrol_user(request):
 #@login_required
 #@user_passes_test(is_admin)
 def view_users_and_assign_pac(request):
-    students = Student.objects.all()
-    pacs = Pac.objects.all()
+    if request.GET.get("user_name"):
+        user_name = request.GET.get("user_name")
+    else:
+        user_name=""
+    # A problem with this query causes the results list to break when user_name is not empty
+    user_emails = Generic_User.objects.raw("select id, email from main.Stupac_generic_user where first_name OR last_name LIKE '%" + user_name + "%'")
 
     if request.method == "POST":
-        student_id = request.POST.get("student_id")
-        pac_id = request.POST.get("pac_id")
-
-        student = get_object_or_404(Student, pk=student_id)
-        student.assigned_pac_id = pac_id
-        student.save()
-
-        #return redirect("student_home")
-
+        student_email = str(request.POST.get("student_email"))
+        pac_first_name = str(request.POST.get("pac_first_name"))
+        pac_last_name = str(request.POST.get("pac_last_name"))
+        if len(student_email)>=1 and len(pac_first_name)>=1 and len(pac_last_name)>=1:
+            pac_assignment = Student.objects.raw("update main.student set pac_first_name = '" + pac_first_name + "', pac_last_name = '" + pac_last_name + "' where student_email = '" + student_email + "'")
+            assignment_status = True
+    else:
+        assignment_status = False
     return render(request, "view_users_and_assign_pac.html", {
-        "students": students,
-        "pacs": pacs
+        "user_emails" : user_emails,
+        "assignment_status" : assignment_status,
     })
 
 

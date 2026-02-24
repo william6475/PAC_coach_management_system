@@ -1,37 +1,76 @@
-from django.contrib.auth.models import AbstractUser, UserManager
+from django.contrib.auth.base_user import AbstractBaseUser
+from django.contrib.auth.models import AbstractUser, UserManager, PermissionsMixin
 from django.db import models
 from django.db.models import CASCADE
 
 
-# Create your models here.
+class CustomUserManager(UserManager):
+    def _create_user(self, email, password, **extra_fields):
+        # tutorial man uses "_create_user()" and "create_user()" and they're two different functions so watch out
+        if not email:
+            raise ValueError('no valid email provided')
 
-#Generic user class used for user authentication
-#Usefull fields inherited from AbstractUser: Username / Password / email / first_name / last_name
-class Generic_user(AbstractUser):
-    generic_user_id = models.AutoField(blank=True, primary_key=True)
+        email = self.normalize_email(email)
+        user = self.model(email=email, **extra_fields)
+        user.set_password(password)
+        user.save(using=self._db)
+
+        return user
+
+    def create_user(self, email=None, password=None, **extra_fields):
+        extra_fields.setdefault('is_staff', False)
+        extra_fields.setdefault('is_superuser', False)
+        return self._create_user(email, password, **extra_fields)
+
+    def create_superuser(self, email=None, password=None, **extra_fields):
+        extra_fields.setdefault('is_staff', True)
+        extra_fields.setdefault('is_superuser', True)
+        return self._create_user(email, password, **extra_fields)
+
+class Generic_User(AbstractBaseUser, PermissionsMixin):
+    email = models.EmailField(blank=True, default='', unique=True)
+    first_name = models.CharField(blank=True, default='', max_length=32)
+    last_name = models.CharField(blank=True, default='', max_length=32)
+
+    is_active = models.BooleanField(default=True)
+    is_superuser = models.BooleanField(default=False)
+    is_staff = models.BooleanField(default=False)
+
+    objects = CustomUserManager()
+
+    USERNAME_FIELD = 'email'
+    EMAIL_FIELD = 'email'
+    REQUIRED_FIELDS = []
+
+    class Meta:
+        verbose_name = 'User'
+        verbose_name_plural = 'Users'
+
+    def get_last_name(self):
+        return self.last_name
 
 
 #Admin class
-class Admin(Generic_user):
-    objects = UserManager()
+class Admin(Generic_User):
+    objects = CustomUserManager()
     
     admin_id = models.AutoField(blank=True, primary_key=True)
-    admin_first_name = models.TextField(blank=True, null=True, max_length=32)
-    admin_last_name = models.TextField(blank=True, null=True, max_length=32)
-    admin_email = models.TextField(blank=True, null=True, max_length=64) # DO THIS!!
+    admin_first_name = models.TextField(blank=True, null=True, max_length=32) #This may be redundant
+    admin_last_name = models.TextField(blank=True, null=True, max_length=32) #This may be redundant
+    admin_email = models.TextField(blank=True, null=True, max_length=64) #This may be redundant
 
     class Meta:
         db_table = 'admin'
 
 
 # PAC class
-class Pac(Generic_user):
-    objects = UserManager()
+class Pac(Generic_User):
+    objects = CustomUserManager()
 
     pac_id = models.AutoField(blank=True, primary_key=True)
-    pac_first_name = models.TextField(blank=True, null=True, max_length=32)
-    pac_last_name = models.TextField(blank=True, null=True, max_length=32)
-    pac_email = models.TextField(blank=True, null=True, max_length=64)
+    pac_first_name = models.TextField(blank=True, null=True, max_length=32) #This may be redundant
+    pac_last_name = models.TextField(blank=True, null=True, max_length=32) #This may be redundant
+    pac_email = models.TextField(blank=True, null=True, max_length=64) #This may be redundant
     dob = models.DateField
     gender = models.TextField(blank=True, null=True,max_length=16)
     department = models.TextField(blank=True, null=True,max_length=64)
@@ -40,18 +79,19 @@ class Pac(Generic_user):
         db_table = 'pac'
 
 #Student class
-class Student(Generic_user):
-    objects = UserManager()
+class Student(Generic_User):
+    objects = CustomUserManager()
 
     student_id = models.AutoField(blank=True,primary_key=True)
-    student_first_name = models.TextField(blank=True, null=True, max_length=32)
-    student_last_name = models.TextField(blank=True, null=True, max_length=32)
-    student_email = models.TextField(blank=True, null=True, max_length=64)
+    student_first_name = models.TextField(blank=True, null=True, max_length=32) #This may be redundant
+    student_last_name = models.TextField(blank=True, null=True, max_length=32) #This may be redundant
+    student_email = models.TextField(blank=True, null=True, max_length=64) #This may be redundant
     dob = models.DateField
     gender = models.CharField(blank=True, null=True,max_length=16)
     course = models.CharField(blank=True, null=True,max_length=64)
-    assigned_pac = models.ForeignKey("Pac", db_column='assigned_pac', on_delete=CASCADE)
-
+    #assigned_pac = models.ForeignKey("Pac", db_column='assigned_pac', on_delete=CASCADE) #foreign key removed for login system functionality
+    pac_first_name = models.TextField(blank=True, null=True, max_length=32)  # This may be redundant
+    pac_last_name = models.TextField(blank=True, null=True, max_length=32)  # This may be redundant
     class Meta:
         db_table = 'student'
 

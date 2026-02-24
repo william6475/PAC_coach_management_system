@@ -46,6 +46,10 @@
     </style>
     <title>View users and assign PAC</title>
     <link rel="icon" href="data:,">
+    <script>
+        const searchParams = new URLSearchParams(window.location.search);//gets the url parameters
+        let searchTerm = searchParams.get("user_name");
+    </script>
 </head>
 <body>
 <!--Navbar-->
@@ -66,8 +70,9 @@
 
 <!--Search bar-->
 <label>
-    <br>
-    <input type="text" id="Student_lookup" placeholder="Student number or full name" class="Widened_form_field">
+    <form>
+        <input type="text" name = "user_name" id="user_name" placeholder="Search by email" class="Widened_form_field" autofocus>
+    </form>
 </label>
 <br>
 <br>
@@ -81,27 +86,9 @@
             </tr>
         </thead>
         <tbody>
-            <tr><td>Example result</td></tr>
-            <tr><td>Example result</td></tr>
-            <tr><td>Example result</td></tr>
-            <tr><td>Example result</td></tr>
-            <tr><td>Example result</td></tr>
-            <tr><td>Example result</td></tr>
-            <tr><td>Example result</td></tr>
-            <tr><td>Example result</td></tr>
-            <tr><td>Example result</td></tr>
-            <tr><td>Example result</td></tr>
-            <tr><td>Example result</td></tr>
-            <tr><td>Example result</td></tr>
-            <tr><td>Example result</td></tr>
-            <tr><td>Example result</td></tr>
-            <tr><td>Example result</td></tr>
-            <tr><td>Example result</td></tr>
-            <tr><td>Example result</td></tr>
-            <tr><td>Example result</td></tr>
-            <tr><td>Example result</td></tr>
-            <tr><td>Example result</td></tr>
-            <tr><td>Example result</td></tr>
+        {% for emails in user_emails %}
+                <tr><td>{{ emails.email }}</td></tr>
+            {% endfor %}
         </tbody>
     </table>
 </div>
@@ -112,17 +99,23 @@
 <h1>Assign PAC to student</h1>
 <br>
 <!-Assign PAC form>
-<form>
-    <label>Student number<label class="Mandatory_field_label">*</label>
-        <input type="Text">
+<form method="post" action = "">
+    {% csrf_token %}
+    <label>Student email<label class="Mandatory_field_label">*</label>
+        <input type="Text" id = 'student_email'>
     </label>
     <label>PAC first name<label class="Mandatory_field_label">*</label>
-        <input type="Text">
+        <input type="Text" id = 'pac_first_name'>
     </label>
     <label>PAC last name<label class="Mandatory_field_label">*</label>
-        <input type="Text">
+        <input type="Text" id = 'pac_last_name'>
     </label>
-    <input type="submit" value="Assign PAC">
+    {% if assignment_status == True %}
+        <label>Successfully assigned PAC to Student</label>
+    {% endif %}
+    <label>
+        <input type="submit" value="Assign PAC">
+    </label>
 </form>
 </div>
     </div>
