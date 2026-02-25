@@ -78,7 +78,7 @@ def register_pac(request):
         form = PacRegistrationForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('login')
+            return redirect('admin_home')
     else:
         form = PacRegistrationForm()
     return render(request, "register.html",{"form":form, "input_name" : 'Pac'})
@@ -109,13 +109,6 @@ def login_view(request):
             #admin_result = Admin.objects.raw("select admin_id from admin where admin_email = '" + user_email + "'")
             if "next" in request.POST:
                 return redirect(request.POST.get("next"))
-
-            #if str(admin_result[0].admin_id) is not None:
-                #return redirect('admin_home')
-            #if str(pac_result[0].pac_id) is not None:
-                #return redirect('pac_home')
-            #if str(student_result[0].student_id) is not None:
-                #return redirect('student_home')
             else:
                 return redirect('admin_home')
     else:
