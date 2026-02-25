@@ -254,20 +254,26 @@ def user_details(request):
     template = loader.get_template('user_details.html')
     user_email = request.GET.get("user_email") #alternative option
 
-    if Pac.objects.get(pac_email=user_email) == user_email:
+    try:
+        Pac.objects.get(pac_email=user_email) == user_email
         user = Pac.objects.get(pac_email=user_email)
         first_name = user.pac_first_name
         last_name = user.pac_last_name
         email = user.pac_email
         gender = user.gender
         course = user.department
-    if Student.objects.get(student_email=user_email):
+    except:
+        print("No Pac with matching credentials")
+    try:
+        Student.objects.get(student_email=user_email)
         user = Student.objects.get(student_email=user_email)
         first_name = user.student_first_name
         last_name = user.student_last_name
         email = user.student_email
         gender = user.gender
         course = user.course
+    except:
+        print ("No Student with matching credentials")
     context = {
         'student_first_name' : first_name,
         'student_last_name' : last_name,
