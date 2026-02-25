@@ -89,9 +89,24 @@ def login_view(request):
         if form.is_valid():
             user_email = str(form.get_user())
             login(request, form.get_user())
-            student_result = Student.objects.raw("select student_id from student where student_email = '"+user_email+"'")
-            pac_result = Pac.objects.raw("select pac_id from pac where pac_email = '" + user_email + "'")
-            admin_result = Admin.objects.raw("select admin_id from admin where admin_email = '" + user_email + "'")
+            try:
+                student_user = Student.objects.get(student_email=user_email)
+                return redirect('student_home')
+            except:
+                print("No student with matching credentials")
+            try:
+                pac_user = Pac.objects.get(pac_email=user_email)
+                return redirect('pac_home')
+            except:
+                print("No pac with matching credentials")
+            try:
+                admin_user = Admin.objects.get(admin_email=user_email)
+                return redirect('admin_home')
+            except:
+                print("No admin with matching credentials")
+            #student_result = Student.objects.raw("select student_id from student where student_email = '"+user_email+"'")
+            #pac_result = Pac.objects.raw("select pac_id from pac where pac_email = '" + user_email + "'")
+            #admin_result = Admin.objects.raw("select admin_id from admin where admin_email = '" + user_email + "'")
             if "next" in request.POST:
                 return redirect(request.POST.get("next"))
 
@@ -111,19 +126,14 @@ def login_view(request):
 def logout_view(request):
     if request.method == "POST":
         logout(request)
-        return redirect('login_page')
-    return render(request, "admin_home.html")
+        redirect('admin_home')
+    return render(request, "login.html")
 
 # Views created here
 def temp_here(request):
     temp = "TemporaryVariable"
     template = loader.get_template('Login.html')
     context = {'temp': temp}
-    return HttpResponse(template.render(context, request))
-
-def login_page(request):
-    template = loader.get_template('login.html')
-    context = {}
     return HttpResponse(template.render(context, request))
 
 def register_home(request):
@@ -135,6 +145,25 @@ def register_home(request):
 #@user_passes_test(is_admin)
 def admin_home(request):
     template = loader.get_template('admin_home.html')
+    generic_id = str(request.user.id)
+    try:
+        pact_user = Pac.objects.get(generic_user_ptr_id=generic_id)
+        return redirect('login')
+    except:
+        a = 0
+    try:
+        student_user = Student.objects.get(generic_user_ptr_id=generic_id)
+        return redirect('login')
+    except:
+        a = 0
+    """
+    # These lines of code auto-assigns email to admin.
+    user = Admin.objects.get(generic_user_ptr_id=generic_id)
+    get_email = Generic_User.objects.raw("select id, email from Stupac_generic_user where id = '" + generic_id + "'")
+    admin_email = str(get_email[0].email)
+    user.admin_email = admin_email
+    user.save(update_fields=['admin_email'])
+    """
     context = {}
     return HttpResponse(template.render(context, request))
 
@@ -144,6 +173,10 @@ def admin_home(request):
 def student_home(request):
     #student_id = "1" #This is a placeholder, replace with login system authentication
     generic_id = str(request.user.id)
+    try:
+        student_user = Student.objects.get(generic_user_ptr_id=generic_id)
+    except:
+        return redirect('login')
     #setStudentEmail(generic_id)
     get_email = Generic_User.objects.raw("select id, email from Stupac_generic_user where id = '" + generic_id + "'")
     student_email = str(get_email[0].email)
@@ -172,7 +205,10 @@ def student_home(request):
 def pac_home(request):
     template = loader.get_template('pac_home.html')
     generic_id = str(request.user.id)
-
+    try:
+        pact_user = Pac.objects.get(generic_user_ptr_id=generic_id)
+    except:
+        return redirect('login')
     get_email = Generic_User.objects.raw("select id, email from Stupac_generic_user where id = '" + generic_id + "'")
     pac_email = str(get_email[0].email)
     fetch_pac_id = Pac.objects.raw(

@@ -77,8 +77,9 @@
 <body>
 <!--Navbar-->
 <div class="topnav">
-    <a href="{% url 'register_home' %}" class="active">Register a user</a>
-    <a href="{% url 'view_users_and_assign_pac' %}">View users and assign pac</a>
+    <a href="{% url 'admin_home' %}" class="active">Admin home</a>
+    <a href="{% url 'view_users' %}">View users</a>
+    <a href="{% url 'assign_pac' %}">Assign pac</a>
     {% if user.is_authenticated %}
             <form class = "logout" action="{% url 'logout' %}" method="POST">
             {% csrf_token %}
