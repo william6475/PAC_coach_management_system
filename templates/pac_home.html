@@ -8,7 +8,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="{% static 'stupac_template/styles.css' %}?v=16">
     <style>
-
+        a{
+            color : #333333;
+            text-decoration: none;
+        }
         .main-content {
             padding: 20px;
             position: relative;
@@ -113,6 +116,7 @@
             }
         }
 
+
     </style>
     <title>PAC home</title>
     <link rel="icon" href="data:,">
@@ -153,7 +157,9 @@
         </thead>
         <tbody>
         {% for student in student_details %}
-                <tr><td>{{ student.student_first_name }}</td></tr>
+                <tr>
+                    <td> <a href = "{% url 'student_details' %}?student_email={{ student.student_email }}"> {{ student.student_first_name }} </a></td>
+                </tr>
             {% endfor %}
         </tbody>
     </table>

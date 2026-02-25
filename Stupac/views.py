@@ -138,13 +138,6 @@ def admin_home(request):
     context = {}
     return HttpResponse(template.render(context, request))
 
-def setStudentEmail(generic_id):
-    get_email = Generic_User.objects.raw("select id, email from Stupac_generic_user where id = '"+generic_id+"'")
-    student_email = str(get_email[0].email)
-    student_id = str(get_email[0].id)
-    Student.objects.raw("update student set student_email = '"+student_email+"' where generic_user_ptr_id = '"+student_id+"'")
-    return True
-
 
 @login_required(login_url="/login/")
 #@user_passes_test(is_student)
@@ -200,7 +193,49 @@ def pac_home(request):
         'student_details' : student_details,
     }
     return HttpResponse(template.render(context, request))
-  
+
+def student_details(request):
+    template = loader.get_template('student_details.html')
+    student_email = request.GET.get("student_email") #alternative option
+    student = Student.objects.get(student_email=student_email)
+    context = {
+        'student_first_name' : student.student_first_name,
+        'student_last_name' : student.student_last_name,
+        'student_email' : student.student_email,
+        'gender' : student.gender,
+        'course' : student.course,
+        'pac_first_name' : student.pac_first_name,
+        'pac_last_name' : student.pac_last_name,
+    }
+    return HttpResponse(template.render(context, request))
+
+def user_details(request):
+    template = loader.get_template('user_details.html')
+    user_email = request.GET.get("user_email") #alternative option
+
+    if Pac.objects.get(pac_email=user_email) == user_email:
+        user = Pac.objects.get(pac_email=user_email)
+        first_name = user.pac_first_name
+        last_name = user.pac_last_name
+        email = user.pac_email
+        gender = user.gender
+        course = user.department
+    if Student.objects.get(student_email=user_email):
+        user = Student.objects.get(student_email=user_email)
+        first_name = user.student_first_name
+        last_name = user.student_last_name
+        email = user.student_email
+        gender = user.gender
+        course = user.course
+    context = {
+        'student_first_name' : first_name,
+        'student_last_name' : last_name,
+        'student_email' : email,
+        'gender' : gender,
+        'course' : course,
+    }
+    return HttpResponse(template.render(context, request))
+
 #@login_required
 #@user_passes_test(is_admin)
 def enrol_user(request):
@@ -217,13 +252,13 @@ def enrol_user(request):
 
     return render(request, "enrol_user.html")
 
+
 def view_users(request):
     template = loader.get_template('view_users.html')
     if request.GET.get("user_name"):
         user_name = request.GET.get("user_name")
     else:
         user_name=""
-    # A problem with this query causes the results list to break when user_name is not empty
     user_emails = Generic_User.objects.raw("select id, email from main.Stupac_generic_user where email LIKE '%" + user_name + "%'")
 
     context = {"user_emails" : user_emails}
@@ -241,50 +276,9 @@ def assign_pac(request):
         student.pac_first_name = pac_first_name
         student.pac_last_name = pac_last_name
         student.save(update_fields=['pac_first_name','pac_last_name'])
-        """
-        generic_id = str(request.user.id)
-        fetch_student_id = Student.objects.raw(
-            "Select student_id from student where generic_user_ptr_id = '" + generic_id + "'")
-        student_id = str(fetch_student_id[0].student_id)
-        Student.objects.raw("Update student set student_email = '"+student_email+"', pac_first_name = '"+pac_first_name+"',pac_last_name = '"+pac_last_name+ "' where student_id = '" + student_id + "'")
-        """
     return render(request, 'assign_pac.html', {})
-    """
-    if request.method == 'POST':
-        user_form = UpdateUserForm(request.POST, instance=request.user)
 
-        if user_form.is_valid():
-            user_form.save()
-            student_email = str(request.POST.get("student_email"))
-            pac_first_name = str(request.POST.get("pac_first_name"))
-            pac_last_name = str(request.POST.get("pac_last_name"))
-            pac_assignment = Student.objects.raw(
-                "update main.student set pac_first_name = '" + pac_first_name + "', pac_last_name = '" + pac_last_name + "' where student_email = '" + student_email + "'")
 
-            messages.success(request, 'Your profile is updated successfully')
-            return redirect(to='student_home')
-    else:
-        user_form = UpdateUserForm(instance=request.user)
-
-    return render(request, 'assign_pac.html', {'user_form': user_form})
-    
-    """
-
-    """
-    if request.user.is_authenticated:
-        current_user = Generic_User.objects.get(id=request.user.id)
-        generic_id = str(request.user.id)
-        user_form = UpdateUserForm(request.POST, instance=current_user)
-        if user_form.is_valid():
-
-            user_form.save()
-            messages.success(request, "PAC successfully updated")
-            return redirect('student_home')
-        return render(request,'admin_home.html',{'user_form':user_form})
-    else:
-        messages.success(request, "update unsuccessful: you must login to access this feature")
-        return redirect('login')
-    """
 #@login_required
 #@user_passes_test(is_admin)
 def view_users_and_assign_pac(request):
@@ -307,24 +301,3 @@ def view_users_and_assign_pac(request):
         "user_emails" : user_emails,
         "assignment_status" : assignment_status,
     })
-
-
-def delete_student(request, student_id):
-    student = Student.objects.get(pk=student_id)
-    student.delete()
-    #return redirect("student_home")
-
-def edit_student(request, student_id):
-    student = get_object_or_404(Student, pk=student_id)
-
-    if request.method == "POST":
-        student.first_name = request.POST.get("first_name")
-        student.last_name = request.POST.get("last_name")
-        student.gender = request.POST.get("gender")
-        student.dob = request.POST.get("dob")
-        student.email = request.POST.get("email")
-        student.course = request.POST.get("course")
-        student.save()
-        #return redirect("student_home")
-
-    return render(request, "enrol_user.html", {"student": student})

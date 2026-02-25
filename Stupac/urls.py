@@ -10,19 +10,16 @@ urlpatterns = [
     path('admin_home/', views.admin_home, name='admin_home'),
     path('enrol_user/', views.enrol_user, name='enrol_user'),
     path('pac_home/',views.pac_home, name='pac_home'),
-    #path('pac_home/?student_name=', views.pac_home, name='pac_home'),
     path('student_home/', views.student_home, name='student_home'),
     path('view_users_and_assign_pac/', views.view_users_and_assign_pac, name='view_users_and_assign_pac'),
     path('view_users/',views.view_users, name='view_users'),
     path('assign_pac/',views.assign_pac, name='assign_pac'),
     path('students/', views.student_home, name='student_list'),
-    path('students/create/', views.enrol_user, name='student_create'),
-    path('students/assign/', views.view_users_and_assign_pac, name='assign_pac'),
+    path('student_details/',views.student_details, name='student_details'),
+    path('user_details/',views.user_details, name='user_details'),
     path('register/',views.register_home, name = 'register_home'),
     path('register/student',views.register_student, name = 'register_student'),
     path('register/pac',views.register_pac, name = 'register_pac'),
-    path('students/edit/<int:student_id>/', views.edit_student, name='edit_student'),
-    path('students/delete/<int:student_id>/', views.delete_student, name='delete_student'),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 # /* from django.urls import path

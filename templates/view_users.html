@@ -8,6 +8,10 @@
     <link rel="stylesheet" href="{% static 'stupac_template/styles.css' %}?v=16">
     <style>
 
+        a{
+            color : #333333;
+            text-decoration: none;
+        }
         .main-content {
             padding: 20px;
             position: relative;
@@ -87,7 +91,7 @@
         </thead>
         <tbody>
         {% for emails in user_emails %}
-                <tr><td>{{ emails.email }}</td></tr>
+                <tr><td><a href = "{% url 'user_details' %}?user_email={{ emails.email }}">{{ emails.email }}</a></td></tr>
             {% endfor %}
         </tbody>
     </table>
