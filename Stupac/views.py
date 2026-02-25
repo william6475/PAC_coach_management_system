@@ -252,53 +252,32 @@ def student_details(request):
 
 def user_details(request):
     template = loader.get_template('user_details.html')
-    user_email = str(request.GET.get("user_email")) #alternative option
-    get_id = Generic_User.objects.raw("select id, email from Stupac_generic_user where email = '" + user_email + "'")
+    user_email = request.GET.get("user_email") #alternative option
+    """
+    
+    user_string = str(user_email)
+    get_id = Generic_User.objects.raw("select id, email from Stupac_generic_user where email = '" + user_string + "'")
     try:
         student_user = Student.objects.get(generic_user_ptr_id=get_id)
-        student_user.student_email = user_email
+        student_user.student_email = user_string
         student_user.save(update_fields=['student_email'])
     except:
         print("No Student with matching credentials")
     try:
         student_user = Pac.objects.get(generic_user_ptr_id=get_id)
-        student_user.pac_email = user_email
+        student_user.pac_email = user_string
         student_user.save(update_fields=['pac_email'])
     except:
         print("No Pac with matching credentials")
     try:
         student_user = Admin.objects.get(generic_user_ptr_id=get_id)
-        student_user.admin_email = user_email
+        student_user.admin_email = user_string
         student_user.save(update_fields=['admin_email'])
     except:
         print("No Admin with matching credentials")
-
-
     """
-    generic_id = str(request.user.id)
     try:
-        student_user = Student.objects.get(generic_user_ptr_id=generic_id)
-    except:
-        return redirect('login')
-    #setStudentEmail(generic_id)
-    get_email = Generic_User.objects.raw("select id, email from Stupac_generic_user where id = '" + generic_id + "'")
-    student_email = str(get_email[0].email)
-    fetch_student_id = Student.objects.raw("Select student_id from student where generic_user_ptr_id = '"+generic_id+"'")
-    student_id = str(fetch_student_id[0].student_id)
-
-    user = Student.objects.get(student_id=student_id)
-    user.student_email = student_email
-    user.save(update_fields=['student_email'])
-    """
-
-
-    first_name = ""
-    last_name = ""
-    email = ""
-    gender = ""
-    course = ""
-    try:
-        #Pac.objects.get(pac_email=user_email) == user_email
+        #if Pac.objects.get(pac_email=user_email) == user_email:
         user = Pac.objects.get(pac_email=user_email)
         first_name = user.pac_first_name
         last_name = user.pac_last_name
@@ -308,6 +287,7 @@ def user_details(request):
     except:
         print("No Pac with matching credentials")
     try:
+        #else:
         Student.objects.get(student_email=user_email)
         user = Student.objects.get(student_email=user_email)
         first_name = user.student_first_name
@@ -316,7 +296,7 @@ def user_details(request):
         gender = user.gender
         course = user.course
     except:
-        print ("No Student with matching credentials")
+        print("No Student with matching credentials")
     context = {
         'student_first_name' : first_name,
         'student_last_name' : last_name,
@@ -356,11 +336,11 @@ def view_users(request):
 @login_required(login_url="/login/")
 def assign_pac(request):
 
-    #This method does not work
     if request.method == 'POST':
         student_email = str(request.POST.get("student_email"))
         pac_first_name = str(request.POST.get("pac_first_name"))
         pac_last_name = str(request.POST.get("pac_last_name"))
+        #if Pac.objects.get(pac_first_name=pac_first_name, pac_last_name=pac_last_name) is not None:
         student = Student.objects.get(student_email=student_email)
         student.pac_first_name = pac_first_name
         student.pac_last_name = pac_last_name
