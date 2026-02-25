@@ -172,6 +172,18 @@ def student_home(request):
 def pac_home(request):
     template = loader.get_template('pac_home.html')
     generic_id = str(request.user.id)
+
+    get_email = Generic_User.objects.raw("select id, email from Stupac_generic_user where id = '" + generic_id + "'")
+    pac_email = str(get_email[0].email)
+    fetch_pac_id = Pac.objects.raw(
+        "Select pac_id from pac where generic_user_ptr_id = '" + generic_id + "'")
+    pac_id = str(fetch_pac_id[0].pac_id)
+
+    user = Pac.objects.get(pac_id=pac_id)
+    user.pac_email = pac_email
+    user.save(update_fields=['pac_email'])
+
+
     fetch_pac_name = Pac.objects.raw(
         "Select pac_first_name, pac_id from pac where generic_user_ptr_id = '" + generic_id + "'")
     if fetch_pac_name[0].pac_first_name is not None:
