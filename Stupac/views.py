@@ -252,10 +252,53 @@ def student_details(request):
 
 def user_details(request):
     template = loader.get_template('user_details.html')
-    user_email = request.GET.get("user_email") #alternative option
-
+    user_email = str(request.GET.get("user_email")) #alternative option
+    get_id = Generic_User.objects.raw("select id, email from Stupac_generic_user where email = '" + user_email + "'")
     try:
-        Pac.objects.get(pac_email=user_email) == user_email
+        student_user = Student.objects.get(generic_user_ptr_id=get_id)
+        student_user.student_email = user_email
+        student_user.save(update_fields=['student_email'])
+    except:
+        print("No Student with matching credentials")
+    try:
+        student_user = Pac.objects.get(generic_user_ptr_id=get_id)
+        student_user.pac_email = user_email
+        student_user.save(update_fields=['pac_email'])
+    except:
+        print("No Pac with matching credentials")
+    try:
+        student_user = Admin.objects.get(generic_user_ptr_id=get_id)
+        student_user.admin_email = user_email
+        student_user.save(update_fields=['admin_email'])
+    except:
+        print("No Admin with matching credentials")
+
+
+    """
+    generic_id = str(request.user.id)
+    try:
+        student_user = Student.objects.get(generic_user_ptr_id=generic_id)
+    except:
+        return redirect('login')
+    #setStudentEmail(generic_id)
+    get_email = Generic_User.objects.raw("select id, email from Stupac_generic_user where id = '" + generic_id + "'")
+    student_email = str(get_email[0].email)
+    fetch_student_id = Student.objects.raw("Select student_id from student where generic_user_ptr_id = '"+generic_id+"'")
+    student_id = str(fetch_student_id[0].student_id)
+
+    user = Student.objects.get(student_id=student_id)
+    user.student_email = student_email
+    user.save(update_fields=['student_email'])
+    """
+
+
+    first_name = ""
+    last_name = ""
+    email = ""
+    gender = ""
+    course = ""
+    try:
+        #Pac.objects.get(pac_email=user_email) == user_email
         user = Pac.objects.get(pac_email=user_email)
         first_name = user.pac_first_name
         last_name = user.pac_last_name
@@ -295,7 +338,6 @@ def enrol_user(request):
             email=request.POST.get("email"),
             course=request.POST.get("course"),
         )
-        #return redirect("student_home")
 
     return render(request, "enrol_user.html")
 
